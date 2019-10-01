@@ -1,0 +1,255 @@
+\documentclass{beamer}
+
+\title{Statistical and computational methods for bioinformatics and social network analysis\linebreak{\small or how did I learn to stop worrying and love the bomb}}
+\author[GGVY]{George G Vega Yon}
+\institute[USC-PREVMED]{University of Southern California, Department of Preventive Medicine}
+
+% Some definitions
+\def\cursection{\frame{\tableofcontents[current]}}
+\newcommand{\ergmitopkg}[0]{\texttt{ergmito}}
+\newcommand{\aphylopkg}[0]{\texttt{aphylo}}
+
+\usepackage{Sweave}
+\begin{document}
+\input{slides-concordance}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\section{Paper 1: Exponential Random Graph Models for Small Networks}
+\cursection
+
+\begin{frame}
+\frametitle{What are Exponential Random Graph Models}
+
+Exponential Family Random Graph Models, aka ERGMs are:
+
+\begin{itemize}
+\item Statistical models of (social) networks
+\item In simple terms: statistical inference on what network patterns/structures/motifs
+govern the data-generating process
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{What are Exponential Random Graph Models: State of the Art}
+
+Currently, in the ERGMs world we have
+
+\begin{itemize}
+\item Estimation of small-large (dozens to a couple of thousand vertices) networks
+is done using MCMC based approaches.
+\item Estimation of large-huge networks (up to the millions of vertices) is done
+using approximation methods like
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{What are Exponential Random Graph Models: The MC-MLE approach}
+
+One of the most popular methods for estimating ERGMs is the MC-MLE approach (citations here)
+
+This consists on the folling steps
+
+\begin{enumerate}
+\item Start from a sensible guess on what should be the population parameters
+(usually done using pseudo-MLE esimtation)
+\item While the algorithm doesn't converge, do:
+  \begin{enumerate}
+  \item Simulate a stream of networks with the current state of the parameter,
+  $\theta_t$
+  \item Using the law of large numbers, approximate the ratio of likelihoods 
+  based on the parameter $\theta_t$, this is the objective function
+  \item Update the parameter by a Newton-Raphson step
+  \item Next iteration
+  \end{enumerate}
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{What are Exponential Random Graph Models: The MC-MLE approach}
+
+MC-MLE works great (we have some simulations showing this), but it has some
+problems:
+
+\begin{itemize}
+\item While lots of advances have been made, there are restrictions on what can
+be done with it, after all, it is an approximation,
+\item In the case of small networks, issues regarding near-degeneracy during
+estimation are common (unstable MCMC process, bad sampling, problems)
+\end{itemize}
+
+What shall we do then?
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Exponential Random Graph Models for Small Networks}
+
+\begin{itemize}
+\item In the case of small-enough networks, computation of the likelihood becomes
+computationally feasible\footnote{A thing mentioned in literature several times, although not much attention paid}
+\item In the case of networks with 5 nodes, 1,048,576
+different configurations, we can compute the likelihood exactly.
+\end{itemize}
+
+Using the exact likelihood opens a huge window of methodological-possibilities
+\end{frame}
+
+\begin{frame}
+\frametitle{The \ergmitopkg{}}
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Paper 1 Simulation Studies}
+
+In order to compare the MLE with the MC-MLE estimation method, we performed a simulation study with the following features:
+
+\begin{itemize}
+\item Draw 20,000 samples of groups of small networks
+\item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
+\item We estimated the models using the ergm and ergmito R packages
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Paper 1 Simulation Studies: Error rate}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Paper 1 Simulation Studies: Empirical Bias}
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Paper 1 Simulation Studies: Empirical Type I error}
+
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\section{Paper 2: On the prediction of gene functions using phylogenetic trees}
+\cursection
+
+\begin{frame}
+\frametitle{Phylogenetic Trees}
+
+\begin{itemize}
+\item It can be very general: think of the tree of life
+\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
+gene level (using sequence-alignment methods, i.e. comparing gene sequences to see how much similar/different two genes are between and within species (whattt!)).
+\item A single phylogenetic tree can host multiple species
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+A common phylogenetic tree
+\end{frame}
+
+\begin{frame}
+\frametitle{Gene Functional Annotations}
+
+The Gene Ontology Project
+
+\begin{itemize}
+\item ASDAS
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{An evolutionary model of gene functions}
+
+The general points of the model
+\begin{itemize}
+\item The rootnode in a phylogenetic tree is the best idea we have about the past, meaning,
+it could be that the tree has more behind, i.e. so functions may be gained since the beginning
+\item At each step in evolution (interior node), there is a probability that the gene may
+gain/loss the function
+\item Those probabilities vary depending on the type of the node: We belive that functional
+changes may happen at Duplication nodes
+\item That's it!
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{An evolutionary model of gene functions: Formal statement}
+
+The whole is based on the markov-assumption: The current state of the gene can be
+fully explained by its parent(s).
+
+For this we use Felsensteins' pruning algorithm (also known as...)
+
+Formally
+
+$$
+P(x = 1) = P(x = 1| x_p = 0)P(\mbox{Gain}) + P(x = 1| x_p = 1)P(\mbox{No loss})
+$$
+
+\end{frame}
+
+\begin{frame}
+\frametitle{The \aphylopkg{}}
+\end{frame}
+
+
+% ------------------------------------------------------------------------------
+\section{Future directions}
+\begin{frame}
+\frametitle{Future directions: ERGMitos}
+
+\begin{itemize}
+\item Identify an adequate test for goodness-of-fit assesment
+\item Extend to estimation of large graphs by splitting the networks in induced-subgraphs
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Future directions: Gene functional prediction}
+
+Possible venues to continue
+
+\begin{itemize}
+\item Incorporate more external information using leaf(and node?) level features.
+\item Adapt the model to incorporate joint estimation of functions using pseudo-likelihood.
+
+$$
+P(a, b, c) \approx P(a,b)P(b,c)P(a,c)
+$$
+\item Make the model hierarchical when pooling trees: different mutation rates.
+\end{itemize}
+
+\end{frame}
+
+
+% ------------------------------------------------------------------------------
+\section{Things that are very interesting but I most probably won't have any time to discuss with the attendees}
+
+\begin{frame}
+Here are some by-products of my research here at USC
+
+\begin{itemize}
+\item The slurmR R package
+\item The pruner C++ library
+\item The fmcmc R package
+\end{itemize}
+
+\end{frame}
+
+\end{document}
+
