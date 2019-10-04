@@ -9,6 +9,7 @@
 \usepackage{tabularx}
 \usepackage{textpos}  % for the textblock* environment
 \usepackage{geometry}
+\usepackage{algorithm2e}
 
 % Styles
 \usepackage{xcolor}
@@ -81,6 +82,14 @@
 \newcommand{\aphylopkg}[0]{\texttt{aphylo}}
 \graphicspath{{.}{fig/}}
 
+
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% --------------------------- END OF PREAMBLE ----------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+
 \begin{document}
 % \SweaveOpts{concordance=TRUE}
 
@@ -113,32 +122,13 @@ govern the data-generating process\pause
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[label=ergmeq]
 \frametitle{ERGMs (cont'd)}
 \centering
 \includegraphics[width=.7\linewidth]{parts-of-ergm.pdf}
 \end{frame}
 
-
-% ------------------------------------------------------------------------------
-\begin{frame}
-
-{\bf\color{suffstat} Sufficient statistics} have various forms
-
-\def\fig1width{.45\linewidth}
-\begin{figure}[tb]
-\centering
-\begin{tabular}{m{.2\linewidth}<\centering m{.4\linewidth}<\raggedright}
-\toprule Representation & Description  \\ \midrule
-\includegraphics[width=\fig1width]{ergm-terms/mutual.pdf} & Mutual Ties (Reciprocity)\linebreak[4]$\sum_{i\neq j}y_{ij}y_{ji}$  \\
-\includegraphics[width=\fig1width]{ergm-terms/ttriad.pdf} & Transitive Triad (Balance)\linebreak[4]$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$  \\
-\includegraphics[width=\fig1width]{ergm-terms/homophily.pdf} & Homophily\linebreak[4]$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$ \\
-\includegraphics[width=\fig1width]{ergm-terms/nodeicov.pdf} & Covariate Effect for Incoming Ties\linebreak[4]$\sum_{i\neq j}y_{ij}x_j$ \\
-\includegraphics[width=\fig1width]{ergm-terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
-\bottomrule
-\end{tabular}
-\end{figure}
-\end{frame}
+\hyperlink{ergmterms}{\beamergotobutton{more on terms}}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=art]
@@ -163,8 +153,18 @@ What about tiny to small networks?
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{ERGMs: The MC-MLE approach (cont'd)}
+\frametitle{A frame with examples of small networks...}
+\begin{figure}
+\centering
+\includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
+\end{figure}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{ERGMs for small networks}
 
 MC-MLE works great (we have some simulations showing this), but it has some
 problems:\pause
@@ -177,14 +177,6 @@ problems:\pause
 
 What shall we do then?
 
-\end{frame}
-
-\begin{frame}
-\frametitle{A frame with examples of small networks...}
-\begin{figure}
-\centering
-\includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
-\end{figure}
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -212,30 +204,9 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 \begin{itemize}[<+->]
 \item Draw 20,000 samples of groups of small networks
 \item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
-\item We estimated the models using the ergm and ergmito R packages
+\item Each group could have from 5 to 300 small networks
+\item We estimated the models using MC-MLE and MLE.
 \end{itemize}
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Paper 1 Simulation Studies: Error rate}
-
-\begin{figure}
-\centering
-\includegraphics[width=.4\linewidth]{failed-tree.pdf}
-\end{figure}
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Paper 1 Simulation Studies: Empirical Bias}
-
-\begin{figure}
-\centering
-\includegraphics[width=.6\linewidth]{bias-02-various-sizes-4-5-ttriad.pdf}
-\end{figure}
 
 \end{frame}
 
@@ -266,13 +237,15 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[label=ergmitoexperiment]
 \frametitle{Paper 1 Simulation Studies: Elapsed time}
 
 \begin{figure}
 \centering
 \includegraphics[width=.6\linewidth]{bias-elapsed-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
+
+\hyperlink{ergmsims}{\beamergotobutton{more results}}
 
 \end{frame}
 
@@ -375,17 +348,46 @@ characteristic way to propel blood through the body. Source: GOC:dph \\
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{An evolutionary model of gene functions}
+\frametitle{An evolutionary model of gene functions (algorithmic view)}
 
-The general points of the model
-\begin{itemize}[<+->]
-\item The rootnode in a phylogenetic tree is the best idea we have about the past, meaning,
-it could be that the tree has more behind, i.e. so functions may be gained since the beginning.
-\item At each step in evolution (interior node), there is a probability that the gene may
-gain/loss the function.
-\item Those probabilities vary depending on the type of the node: We belive that functional
-changes may happen at Duplication nodes.
-\end{itemize}
+\footnotesize
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{A phylogenetic tree, $\{\pi, \mu, \psi\}$(Model probabilities)}
+\KwResult{An annotated tree}
+\pause
+\For{$n \in PostOrder(N)$}{
+  $\mbox{\bf\color{usccardinal}Nodes gain/loss function depending on their parent}$\;\pause
+  \Switch{class of $n$}{
+    \uCase{root node}{
+      Gain function with probability $\pi$\;
+    }\pause
+    \uCase{interior node} {\pause
+      \lIf{Parent has the function}{Keep it with prob. $(1-\mu_1)$}\pause
+      \lElse{Gain it with prob. $\mu_0$}\pause
+    }
+  }\pause
+  $\mbox{\bf\color{usccardinal}Finally, we allow for mislabeling}$\;\pause
+  \uIf{$n$ is leaf}{\pause
+    \lIf{has the function}{Mislabel with prob. $\psi_1$}\pause
+    \lElse{Mislabel with prob. $\psi_0$}\pause
+  }
+}
+\end{algorithm}
+
+\normalsize
+
+% 
+% The general points of the model
+% \begin{itemize}[<+->]
+% \item The rootnode in a phylogenetic tree is the best idea we have about the past, meaning,
+% it could be that the tree has more behind, i.e. so functions may be gained since the beginning.
+% \item At each step in evolution (interior node), there is a probability that the gene may
+% gain/loss the function.
+% \item Those probabilities vary depending on the type of the node: We belive that functional
+% changes may happen at Duplication nodes.
+% \end{itemize}
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -564,6 +566,34 @@ Here are some by-products of my research here at USC
 \bibliography{bibliography.bib}
 \end{frame}
 
+
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+
+\begin{frame}[label=ergmterms]
+
+{\bf\color{suffstat} Sufficient statistics} have various forms
+
+\def\fig1width{.45\linewidth}
+\begin{figure}[tb]
+\centering
+\begin{tabular}{m{.2\linewidth}<\centering m{.4\linewidth}<\raggedright}
+\toprule Representation & Description  \\ \midrule
+\includegraphics[width=\fig1width]{ergm-terms/mutual.pdf} & Mutual Ties (Reciprocity)\linebreak[4]$\sum_{i\neq j}y_{ij}y_{ji}$  \\
+\includegraphics[width=\fig1width]{ergm-terms/ttriad.pdf} & Transitive Triad (Balance)\linebreak[4]$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$  \\
+\includegraphics[width=\fig1width]{ergm-terms/homophily.pdf} & Homophily\linebreak[4]$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$ \\
+\includegraphics[width=\fig1width]{ergm-terms/nodeicov.pdf} & Covariate Effect for Incoming Ties\linebreak[4]$\sum_{i\neq j}y_{ij}x_j$ \\
+\includegraphics[width=\fig1width]{ergm-terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
+\bottomrule
+\end{tabular}
+\end{figure}
+
+\hyperlink{ergmeq}{\beamerreturnbutton{go back}}
+\end{frame}
+
 % ------------------------------------------------------------------------------
 \begin{frame}[label=mcmle]
 \frametitle{ERGMs: The MC-MLE approach}
@@ -604,6 +634,31 @@ joint models
 \end{itemize}
 
 \hyperlink{ergmito}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=ergmsims,allowframebreaks]
+\frametitle{Paper 1 Simulation Studies: Error rate}
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\linewidth]{failed-tree.pdf}
+\end{figure}
+
+\hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Paper 1 Simulation Studies: Empirical Bias}
+
+\begin{figure}
+\centering
+\includegraphics[width=.6\linewidth]{bias-02-various-sizes-4-5-ttriad.pdf}
+\end{figure}
+
+\hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
