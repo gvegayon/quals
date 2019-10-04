@@ -1,43 +1,100 @@
 \documentclass[aspectratio=169, 10pt]{beamer}
 
+% Some important packages
+\usepackage{apacite}
+\usepackage{epstopdf}
+\hypersetup{colorlinks=false, allcolors=purple}
+\usepackage{booktabs}
+\linespread{1.3}
+\usepackage{tabularx}
+\usepackage{textpos}  % for the textblock* environment
+\usepackage{geometry}
+
+% Styles
+\usepackage{xcolor}
+\definecolor{suffstat}{RGB}{10,159,0}
+\definecolor{normconst}{RGB}{87,38,231}
+
+% USC Colors
+\definecolor{usccardinal}{RGB}{153,27,30}
+\definecolor{uscgold}{RGB}{255,204,0}
+\definecolor{usclightgray}{gray}{.7}
+\definecolor{uscdarkgray}{gray}{.3}
+
 \usetheme{default}
+
+\setbeamercolor{title}{fg=uscgold, bg=usccardinal}
+\setbeamercolor{section in toc}{fg=usccardinal}
+\setbeamercolor{frametitle}{use=title, fg=title.fg, bg=title.bg}
+\setbeamercolor{item}{fg=uscdarkgray}
+\setbeamercolor{normal text}{fg=uscdarkgray}
+\setbeamercolor{author in head/foot}{use=title, bg=title.bg, fg=title.fg}
+\setbeamercolor{title in head/foot}{use=title, bg=title.bg, fg=title.fg}
+\setbeamercolor{author}{use=title, bg=title.bg, fg=title.fg}
+\setbeamercolor{date}{use=title, bg=title.bg, fg=title.fg}
+\setbeamercolor{institute}{use=title, bg=title.bg, fg=title.fg}
+\setbeamercolor{button}{bg=usccardinal, fg=uscgold}
+
+
+% Figures and tables caption
+\setbeamertemplate{caption}{
+{\bf\color{usccardinal}\insertcaptionname{} \insertcaptionnumber{}} \insertcaption
+}
+\setbeamercolor{caption name}{fg=usccardinal}
+
+
+% Naigation
+\makeatother
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle\hspace*{3em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\setbeamertemplate{navigation symbols}{}
+
+\addtobeamertemplate{frametitle}{}{%
+\begin{textblock*}{.1\textwidth}(.95\textwidth, -1cm)
+\includegraphics[width=1\textwidth]{4-Line_KeckSOMofUSC_CardOnGold1.eps}
+\end{textblock*}
+}
+
+
+% Avoid appendix showin in toc -------------------------------------------------
+% \nobibintoc
+% ------------------------------------------------------------------------------
 
 \title[Stat. Comp. Bioinf \& SocNets.]{Statistical and computational methods for bioinformatics and social network analysis\linebreak{\small or how did I learn to stop worrying and love the bomb}}
 \author[GGVY]{George G Vega Yon}
 \institute[USC-PREVMED]{University of Southern California, Department of Preventive Medicine}
 
-% Naigation
-\setbeamertemplate{navigation symbols}{%
-    \usebeamerfont{footline}%
-    \usebeamercolor[fg]{footline}%
-    \hspace{1em}%
-    \insertframenumber/\inserttotalframenumber
-}
-
 % Some definitions
-\def\cursection{\frame{\tableofcontents[current]}}
+\def\cursection{\frame{\frametitle{Contents}\tableofcontents[current]}}
 \newcommand{\ergmitopkg}[0]{\texttt{ergmito}}
 \newcommand{\aphylopkg}[0]{\texttt{aphylo}}
 \graphicspath{{.}{fig/}}
-
-% Some important packages
-\usepackage{apacite}
-\hypersetup{colorlinks=true, allcolors=purple}
-\usepackage{booktabs}
-\linespread{1.3}
-\usepackage{tabularx}
 
 \usepackage{Sweave}
 \begin{document}
 \input{slides-concordance}
 
 % ------------------------------------------------------------------------------
+\setbeamercolor{background canvas}{bg=usccardinal}
 \begin{frame}[noframenumbering]
 \maketitle
 \end{frame}
+\setbeamercolor{background canvas}{bg=}
 
 % ------------------------------------------------------------------------------
 \section{Paper 1: Exponential Random Graph Models for Small Networks}
+\frame{\frametitle{Contents}\tableofcontents}
 \cursection
 
 \begin{frame}
@@ -54,13 +111,21 @@ govern the data-generating process
 \end{figure}
 \end{itemize}
 
+\end{frame}
 
-
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{ERGMs (cont'd)}
+\centering
+\includegraphics[width=.7\linewidth]{parts-of-ergm.pdf}
 \end{frame}
 
 
 % ------------------------------------------------------------------------------
 \begin{frame}
+
+{\bf\color{suffstat} Sufficient statistics} have various forms
+
 \def\fig1width{.45\linewidth}
 \begin{figure}[tb]
 \centering
@@ -73,18 +138,17 @@ govern the data-generating process
 \includegraphics[width=\fig1width]{ergm-terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
 \bottomrule
 \end{tabular}
-\caption{\label{fig:ergm-structs}Besides of the common edge count statistic (number of ties in a graph), ERGMs allow measuring other more complex structures that can be captured as sufficient statistics. }
 \end{figure}
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{What are Exponential Random Graph Models: State of the Art}
+\begin{frame}[label=art]
+\frametitle{ERGMs: State of the Art}
 \pause
 Small-large (dozens to a couple of thousand vertices) networks
 
 \begin{itemize}
-\item Markov Chain Monte Carlo (MCMC) based approaches like MC-MLE or Robbins-Monro Stochastic approximation.
+\item Markov Chain Monte Carlo (MCMC) based approaches like MC-MLE or Robbins-Monro Stochastic approximation. \hyperlink{mcmle}{\beamergotobutton{details}}
 \item Maximum Pseudo Likelihood (MPLE)
 \end{itemize}\pause
 
@@ -100,41 +164,16 @@ But who cares about tiny to small networks?
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{What are Exponential Random Graph Models: The MC-MLE approach}
-
-One of the most popular methods for estimating ERGMs is the MC-MLE approach (citations here)
-
-This consists on the folling steps
-
-\begin{enumerate}
-\item Start from a sensible guess on what should be the population parameters
-(usually done using pseudo-MLE esimtation)
-\item While the algorithm doesn't converge, do:
-  \begin{enumerate}
-  \item Simulate a stream of networks with the current state of the parameter,
-  $\theta_t$
-  \item Using the law of large numbers, approximate the ratio of likelihoods 
-  based on the parameter $\theta_t$, this is the objective function
-  \item Update the parameter by a Newton-Raphson step
-  \item Next iteration
-  \end{enumerate}
-\end{enumerate}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{What are Exponential Random Graph Models: The MC-MLE approach}
+\frametitle{ERGMs: The MC-MLE approach (cont'd)}
 
 MC-MLE works great (we have some simulations showing this), but it has some
 problems:
 
 \begin{itemize}
-\item While lots of advances have been made, there are restrictions on what can
-be done with it, after all, it is an approximation,
-\item In the case of small networks, issues regarding near-degeneracy during
-estimation are common (unstable MCMC process, bad sampling, problems)
+\item Possible accuracy issues (error rates)
+\item Prone to degeneracy problems (sampling and existance of MLE)
+\item It is not MLE,
 \end{itemize}
 
 What shall we do then?
@@ -142,25 +181,20 @@ What shall we do then?
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Exponential Random Graph Models for Small Networks}
+\begin{frame}[label=ergmito]
+\frametitle{ERGMs for Small Networks}
 
 \begin{itemize}
 \item In the case of small-enough networks, computation of the likelihood becomes
-computationally feasible\footnote{A thing mentioned in literature several times, although not much attention paid}
-\item In the case of networks with 5 nodes, 1,048,576
-different configurations, we can compute the likelihood exactly.
+computationally feasible.
+\item For example, a network with 5 nodes has 1,048,576
+unique configurations.
+\item This allow us to directly compute {\bf\color{normconst} the normalizing constant}.
 \end{itemize}
 
-Using the exact likelihood opens a huge window of methodological-possibilities
-\end{frame}
+Using the exact likelihood opens a huge window of methodological-possibilities.
 
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{The \ergmitopkg{}}
-
-
-
+We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -183,7 +217,7 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 \begin{figure}
 \centering
-\includegraphics[width=.5\linewidth]{failed-tree.pdf}
+\includegraphics[width=.4\linewidth]{failed-tree.pdf}
 \end{figure}
 
 \end{frame}
@@ -194,7 +228,7 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 \begin{figure}
 \centering
-\includegraphics[width=.7\linewidth]{bias-02-various-sizes-4-5-ttriad.pdf}
+\includegraphics[width=.6\linewidth]{bias-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
 
 \end{frame}
@@ -202,6 +236,8 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 % ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Paper 1 Simulation Studies: Empirical Type I error}
+
+\footnotesize
 
 \begin{table}[ht]
 	\centering
@@ -229,10 +265,23 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 \begin{figure}
 \centering
-\includegraphics[width=.7\linewidth]{bias-elapsed-02-various-sizes-4-5-ttriad.pdf}
+\includegraphics[width=.6\linewidth]{bias-elapsed-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
 
 \end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 1: Takeaway}
+\pause
+\begin{itemize}
+\item Developed a new extension of ERGMs using exact statistics for small networks
+(families, teams, ego-centered, etc.)\pause
+\item Performance: Same (un)bias, Lower Type I error rates, (way) faster.\pause
+\item Opens the door the new methods.
+\end{itemize}
+\end{frame}
+
 
 % ------------------------------------------------------------------------------
 \section{Paper 2: On the prediction of gene functions using phylogenetic trees}
@@ -255,13 +304,11 @@ A common phylogenetic tree
 \end{frame}
 
 \begin{frame}
-\frametitle{Gene Functional Annotations}
-
-The Gene Ontology Project
+\frametitle{Gene Functional Annotations: The Gene Ontology Project}
 
 \begin{table}
-\small
-\begin{tabular}{lm{.5\linewidth}}
+\footnotesize
+\begin{tabular}{lm{.6\linewidth}}
 \toprule
 \textbf{Accession} & GO:0060047 \\
 \textbf{Name} & heart contraction \\
@@ -272,9 +319,19 @@ The Gene Ontology Project
 characteristic way to propel blood through the body. Source: GOC:dph \\
 \bottomrule
 \end{tabular}
+\caption{Heart Contraction Function. source: \href{http://amigo.geneontology.org/amigo/term/GO:0060047}{amigo.geneontology.org}}
 \end{table}
 
-source: http://amigo.geneontology.org/amigo/term/GO:0060047
+\def\tmpwidth{.15\linewidth}
+\begin{table}
+\footnotesize
+\begin{tabular}{*{4}{p{\tmpwidth}<\centering}}
+\includegraphics[width=1\linewidth]{cat.jpg} \linebreak pthr10037 & %
+\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak \textbf{pthr11521} & %
+\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak \textbf{pthr11521} & %
+\includegraphics[width=1\linewidth]{horse.jpg} \linebreak pthr24356
+\end{tabular}
+\end{table}
 
 
 \end{frame}
@@ -283,7 +340,7 @@ source: http://amigo.geneontology.org/amigo/term/GO:0060047
 \frametitle{Speciation}
 \begin{figure}
 \centering
-\def\svgwidth{.9\linewidth}
+\def\svgwidth{.8\linewidth}
 \tiny
 % Source 
 \input{fig/Drosophila_speciation_experiment.pdf_tex}
@@ -295,7 +352,7 @@ source: http://amigo.geneontology.org/amigo/term/GO:0060047
 \frametitle{Duplication}
 \begin{figure}
 \centering
-\def\svgwidth{.7\linewidth}
+\def\svgwidth{.6\linewidth}
 \tiny
 % Source : https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg
 \input{fig/Evolution_fate_duplicate_genes_-_vector.pdf_tex}
@@ -335,10 +392,108 @@ $$
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{The \aphylopkg{}}
+\frametitle{Paper 2: Estimation of the model}
+The model has (so far) 7 fixed parameters
+\begin{description}
+\item[$\psi_0, \psi_1$] Probability of making a mistake (mislabel)
+\item[$\mu_{d0}, \mu_{d1}$] Probability of functional gain/loss (duplication nodes)
+\item[$\mu_{s0}, \mu_{s1}$] Probability of functional gain/loss (other nodes)
+\item[$\pi$] Probability that the root has the function
+\end{description}
 \end{frame}
 
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylo]
+\frametitle{Paper 2: Estimation of the model (cont'd)}
+\begin{itemize}
+\item We developed a full set of tools (C++ library + R pacakge) for this framework
+\hyperlink{aphylopkg}{\beamergotobutton{more}}
+\item Estimation is done via: MLE, MAP, and MCMC (using an adaptive kernel)
+\item Posterior probabilities are estimated using the conditional on the observed data.
+\item To evaluate performance, we used two datasets: manually (fully) annotated (inferred) trees, and experimentally annotated trees
+\end{itemize}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 2: Pooled estimation}
+
+\begin{table}[ht]
+\centering
+\scalebox{0.6}{
+\begin{tabular}{l*{8}{m{0.14\linewidth}}}
+  \toprule
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) \\ 
+  \midrule
+$\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\ 
+  $\psi_1$ & 0.00 & 0.00 & 0.01 & 0.01 & 0.00 & 0.00 & 0.00 & 0.01 \\ 
+  $\mu_{d0}$ & 0.01 & 0.01 & 0.97 & 0.96 & 1.00 & 0.01 & 1.00 & 0.98 \\ 
+  $\mu_{d1}$ & 0.01 & 0.02 & 0.52 & 0.58 & 0.25 & 0.02 & 0.51 & 0.58 \\ 
+  $\mu_{s0}$ & 0.00 & 0.00 & 0.05 & 0.06 & 0.07 & 0.00 & 0.05 & 0.06 \\ 
+  $\mu_{s1}$ & 0.01 & 0.01 & 0.01 & 0.02 & 0.01 & 0.01 & 0.01 & 0.02 \\ 
+  $\pi$ & 0.81 & 0.91 & 0.78 & 0.45 & 0.82 & 0.91 & 0.83 & 0.49 \\ 
+  Tree count & 88 & 88 & 141 & 141 & 88 & 88 & 141 & 141 \\ 
+\midrule   Method & MCMC & MCMC & MCMC & MCMC & MLE & MLE & MLE & MLE \\ 
+  Prior & Uniform & Beta & Uniform & Beta & Uniform & Beta & Uniform & Beta \\ 
+  Inferred & Yes & Yes & No & No & Yes & Yes & No & No \\ 
+  AUC & 1.00 & 1.00 & 0.69 & 0.67 & 0.98 & 1.00 & 0.70 & 0.67 \\ 
+  P. Score (obs) & 1.00 & 1.00 & 0.81 & 0.81 & 0.92 & 1.00 & 0.81 & 0.81 \\ 
+  P. Score (random) & 0.71 & 0.71 & 0.61 & 0.61 & 0.71 & 0.71 & 0.61 & 0.61 \\ 
+   \bottomrule
+\end{tabular}
+}
+\caption{Parameter estimates using different estimation methods, priors, and types of annotations.} 
+\end{table}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 2: Pooled estimation (worth it?)}
+
+\begin{figure}
+\centering
+\includegraphics[width=.5\linewidth]{comparing-accuracy-1.pdf}
+\end{figure}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 2: Leave-one-out predictions}
+
+\begin{figure}
+\centering
+\includegraphics[width=.7\linewidth]{annotations1.pdf}
+\end{figure}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 2: Out-of-sample-predictions}
+
+\begin{figure}
+\centering
+\includegraphics[width=.65\linewidth]{out-of-sample1-1.pdf}
+\end{figure}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Paper 2: Key takeaways}
+\pause
+\begin{itemize}
+\item (Yet another) model for predicting gene functions using phylogenetics\pause
+\item Big difference... computationally scalable\pause
+\item Meaningful biological results\pause
+\item Preliminary accuracy results comparable to state-of-the-art phylo-based
+models
+\end{itemize}
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \section{Future directions}
@@ -384,10 +539,66 @@ Here are some by-products of my research here at USC
 
 \end{frame}
 
+\renewcommand{\section}[2]{}%
+\appendix
 \begin{frame}[allowframebreaks]
 \frametitle{References}
 \bibliographystyle{apacite}
 \bibliography{bibliography.bib}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=mcmle]
+\frametitle{ERGMs: The MC-MLE approach}
+
+One of the most popular methods for estimating ERGMs is the MC-MLE approach (citations here)
+
+This consists on the folling steps
+
+\begin{enumerate}
+\item Start from a sensible guess on what should be the population parameters
+(usually done using pseudo-MLE esimtation)
+\item While the algorithm doesn't converge, do:
+  \begin{enumerate}
+  \item Simulate a stream of networks with the current state of the parameter,
+  $\theta_t$
+  \item Using the law of large numbers, approximate the ratio of likelihoods 
+  based on the parameter $\theta_t$, this is the objective function
+  \item Update the parameter by a Newton-Raphson step
+  \item Next iteration
+  \end{enumerate}
+\end{enumerate}
+
+\hyperlink{art}{\beamerreturnbutton{go back}}
+
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=ergmitopkg]
+\frametitle{The \ergmitopkg{}}
+
+\begin{itemize}
+\item Implements estimation of ERGMs using exact statistics for small networks
+\item Metaprogramming allows specifying likelihood (and gradient) functions for
+joint models
+\item Includes tools for simulating, and postestimation checks
+\item Getting ready for CRAN!
+\end{itemize}
+
+\hyperlink{ergmito}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylopkg]
+\frametitle{The \aphylopkg{}}
+
+\begin{itemize}
+\item TBF
+\end{itemize}
+
+\hyperlink{aphylo}{\beamerreturnbutton{go back}}
 \end{frame}
 
 \end{document}
