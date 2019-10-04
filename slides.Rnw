@@ -82,7 +82,7 @@
 \graphicspath{{.}{fig/}}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+% \SweaveOpts{concordance=TRUE}
 
 % ------------------------------------------------------------------------------
 \setbeamercolor{background canvas}{bg=usccardinal}
@@ -101,10 +101,10 @@
 
 Exponential Family Random Graph Models, aka ERGMs are:\pause
 
-\begin{itemize}
-\item Statistical models of (social) networks\pause
+\begin{itemize}[<+->]
+\item Statistical models of (social) networks
 \item In simple terms: statistical inference on what network patterns/structures/motifs
-govern the data-generating process
+govern the data-generating process\pause
 \begin{figure}
 \includegraphics[width=.6\linewidth]{friendly-terms.pdf}
 \end{figure}
@@ -159,7 +159,7 @@ large-huge networks (up to the millions of vertices)
 \item Equilibrium Expectation Algorithm (millions of vertices)
 \end{itemize}\pause
 
-But who cares about tiny to small networks?
+What about tiny to small networks?
 
 \end{frame}
 
@@ -167,9 +167,9 @@ But who cares about tiny to small networks?
 \frametitle{ERGMs: The MC-MLE approach (cont'd)}
 
 MC-MLE works great (we have some simulations showing this), but it has some
-problems:
+problems:\pause
 
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Possible accuracy issues (error rates)
 \item Prone to degeneracy problems (sampling and existance of MLE)
 \item It is not MLE,
@@ -179,20 +179,27 @@ What shall we do then?
 
 \end{frame}
 
+\begin{frame}
+\frametitle{A frame with examples of small networks...}
+\begin{figure}
+\centering
+\includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
+\end{figure}
+\end{frame}
+
 % ------------------------------------------------------------------------------
 \begin{frame}[label=ergmito]
 \frametitle{ERGMs for Small Networks}
 
-\begin{itemize}
+\pause
+\begin{itemize}[<+->]
 \item In the case of small-enough networks, computation of the likelihood becomes
 computationally feasible.
 \item For example, a network with 5 nodes has \Sexpr{formatC(2^(20), big.mark = ",", format ="d")}
 unique configurations.
 \item This allow us to directly compute {\bf\color{normconst} the normalizing constant}.
-\end{itemize}
-
-Using the exact likelihood opens a huge window of methodological-possibilities.
-
+\item Using the exact likelihood opens a huge window of methodological-possibilities.
+\end{itemize}\pause
 We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
 \end{frame}
 
@@ -200,9 +207,9 @@ We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopk
 \begin{frame}
 \frametitle{Paper 1 Simulation Studies}
 
-In order to compare the MLE with the MC-MLE estimation method, we performed a simulation study with the following features:
+In order to compare the MLE with the MC-MLE estimation method, we performed a simulation study with the following features:\pause
 
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Draw 20,000 samples of groups of small networks
 \item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
 \item We estimated the models using the ergm and ergmito R packages
@@ -271,12 +278,12 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 1: Takeaway}
+\frametitle{Paper 1: Key takeaway}
 \pause
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Developed a new extension of ERGMs using exact statistics for small networks
-(families, teams, ego-centered, etc.)\pause
-\item Performance: Same (un)bias, Lower Type I error rates, (way) faster.\pause
+(families, teams, ego-centered, etc.)
+\item Performance: Same (un)bias, Lower Type I error rates, (way) faster.
 \item Opens the door the new methods.
 \end{itemize}
 \end{frame}
@@ -288,8 +295,8 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 \begin{frame}
 \frametitle{Phylogenetic Trees}
-
-\begin{itemize}
+\pause
+\begin{itemize}[<+->]
 \item It can be very general: think of the tree of life
 \item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
 gene level (using sequence-alignment methods, i.e. comparing gene sequences to see how much similar/different two genes are between and within species (whattt!)).
@@ -298,13 +305,20 @@ gene level (using sequence-alignment methods, i.e. comparing gene sequences to s
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
 \begin{frame}
-A common phylogenetic tree
+
+<<random-tree, echo=FALSE, messages=FALSE, out.width=".6\\linewidth", fig.align='center'>>=
+set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
+@
+
+
 \end{frame}
 
 \begin{frame}
 \frametitle{Gene Functional Annotations: The Gene Ontology Project}
 
+% ------------------------------------------------------------------------------
 \begin{table}
 \footnotesize
 \begin{tabular}{lm{.6\linewidth}}
@@ -359,35 +373,37 @@ characteristic way to propel blood through the body. Source: GOC:dph \\
 \end{figure}
 \end{frame}
 
-
+% ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{An evolutionary model of gene functions}
 
 The general points of the model
-\begin{itemize}
+\begin{itemize}[<+->]
 \item The rootnode in a phylogenetic tree is the best idea we have about the past, meaning,
-it could be that the tree has more behind, i.e. so functions may be gained since the beginning
+it could be that the tree has more behind, i.e. so functions may be gained since the beginning.
 \item At each step in evolution (interior node), there is a probability that the gene may
-gain/loss the function
+gain/loss the function.
 \item Those probabilities vary depending on the type of the node: We belive that functional
-changes may happen at Duplication nodes
-\item That's it!
+changes may happen at Duplication nodes.
 \end{itemize}
 \end{frame}
 
+% ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{An evolutionary model of gene functions: Formal statement}
 
-The whole is based on the markov-assumption: The current state of the gene can be
+\begin{itemize}[<+->]
+\item The whole is based on the markov-assumption: The current state of the gene can be
 fully explained by its parent(s).
 
-For this we use Felsensteins' pruning algorithm (also known as...)
+\item For this we use Felsensteins' pruning algorithm (also known as...)
 
 Formally
 
 $$
 P(x = 1) = P(x = 1| x_p = 0)P(\mbox{Gain}) + P(x = 1| x_p = 1)P(\mbox{No loss})
 $$
+\end{itemize}
 
 \end{frame}
 
@@ -485,10 +501,10 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 \begin{frame}
 \frametitle{Paper 2: Key takeaways}
 \pause
-\begin{itemize}
-\item (Yet another) model for predicting gene functions using phylogenetics\pause
-\item Big difference... computationally scalable\pause
-\item Meaningful biological results\pause
+\begin{itemize}[<+->]
+\item (Yet another) model for predicting gene functions using phylogenetics
+\item Big difference... computationally scalable
+\item Meaningful biological results
 \item Preliminary accuracy results comparable to state-of-the-art phylo-based
 models
 \end{itemize}
@@ -499,7 +515,9 @@ models
 \begin{frame}
 \frametitle{Future directions: ERGMitos}
 
-\begin{itemize}
+Possible venues to continue\pause
+
+\begin{itemize}[<+->]
 \item Identify an adequate test for goodness-of-fit assesment
 \item Extend to estimation of large graphs by splitting the networks in induced-subgraphs
 \end{itemize}
@@ -509,9 +527,9 @@ models
 \begin{frame}
 \frametitle{Future directions: Gene functional prediction}
 
-Possible venues to continue
+Possible venues to continue\pause
 
-\begin{itemize}
+\begin{itemize}[<+->]
 \item Incorporate more external information using leaf(and node?) level features.
 \item Adapt the model to incorporate joint estimation of functions using pseudo-likelihood.
 
