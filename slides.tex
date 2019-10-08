@@ -50,6 +50,8 @@
 
 \usepackage{alltt}
 
+% \transdissolve[duration=0.2] % Only works with Adobe Acrobat
+
 % Some important packages
 \usepackage{apacite}
 \usepackage{epstopdf}
@@ -60,6 +62,7 @@
 \usepackage{textpos}  % for the textblock* environment
 \usepackage{geometry}
 \usepackage{algorithm2e}
+\usepackage{amsmath, amssymb}
 
 % Styles
 \usepackage{xcolor}
@@ -315,39 +318,10 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 \section{Paper 2: On the prediction of gene functions using phylogenetic trees}
 \cursection
 
-\begin{frame}
-\frametitle{Phylogenetic Trees}
-\pause
-\begin{itemize}[<+->]
-\item It can be very general: think of the tree of life
-\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
-gene level (using sequence-alignment methods, i.e. comparing gene sequences to see how much similar/different two genes are between and within species (whattt!)).
-\item A single phylogenetic tree can host multiple species
-\end{itemize}
-
-\end{frame}
-
 % ------------------------------------------------------------------------------
-\begin{frame}
-
-\begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-
-{\centering \includegraphics[width=.6\linewidth]{figure/random-tree-1} 
-
-}
-
-
-
-\end{knitrout}
-
-
-\end{frame}
-
 \begin{frame}
 \frametitle{Gene Functional Annotations: The Gene Ontology Project}
 
-% ------------------------------------------------------------------------------
 \begin{table}
 \footnotesize
 \begin{tabular}{lm{.6\linewidth}}
@@ -379,114 +353,83 @@ characteristic way to propel blood through the body. Source: GOC:dph \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Speciation}
-\begin{figure}
-\centering
-\def\svgwidth{.8\linewidth}
-\tiny
-% Source 
-\input{fig/Drosophila_speciation_experiment.pdf_tex}
-\caption{\citeA{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
-\end{figure}
-\end{frame}
+\frametitle{Phylogenetic Trees}
+\pause
+\begin{itemize}[<+->]
+\item It can be very general: think of the tree of life
+\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
+gene level (using sequence-alignment methods, i.e. comparing gene sequences to see how much similar/different two genes are between and within species (whattt!)).
+\item A single phylogenetic tree can host multiple species
+\end{itemize}
 
-\begin{frame}
-\frametitle{Duplication}
-\begin{figure}
-\centering
-\def\svgwidth{.6\linewidth}
-\tiny
-% Source : https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg
-\input{fig/Evolution_fate_duplicate_genes_-_vector.pdf_tex}
-\caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
-\end{figure}
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{An evolutionary model of gene functions (algorithmic view)}
 
-\footnotesize
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
 
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwData{A phylogenetic tree, $\{\pi, \mu, \psi\}$(Model probabilities)}
-\KwResult{An annotated tree}
-\pause
-\For{$n \in PostOrder(N)$}{
-  $\mbox{\bf\color{usccardinal}Nodes gain/loss function depending on their parent}$\;\pause
-  \Switch{class of $n$}{
-    \uCase{root node}{
-      Gain function with probability $\pi$\;
-    }\pause
-    \uCase{interior node} {\pause
-      \lIf{Parent has the function}{Keep it with prob. $(1-\mu_1)$}\pause
-      \lElse{Gain it with prob. $\mu_0$}\pause
-    }
-  }\pause
-  $\mbox{\bf\color{usccardinal}Finally, we allow for mislabeling}$\;\pause
-  \uIf{$n$ is leaf}{\pause
-    \lIf{has the function}{Mislabel with prob. $\psi_1$}\pause
-    \lElse{Mislabel with prob. $\psi_0$}\pause
-  }
+{\centering \includegraphics[width=.6\linewidth]{figure/random-tree-1} 
+
 }
-\end{algorithm}
+
+
+
+\end{knitrout}
+
+
+\end{frame}
+
+
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylographicalview]
+\frametitle{An evolutionary model of gene functions: Formal statement}
+
+\definecolor{rootnode}{RGB}{0,159,211}
+\definecolor{innernode}{RGB}{90,159,89}
+\definecolor{leafnode}{RGB}{255,107,0}
+
+\small
+
+\begin{minipage}{.38\linewidth}
+\begin{itemize}
+	\item<2-> \textcolor{rootnode}{Initial (spontaneous) gain of function}.
+	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on the state of its' parents. ({\bf markov process})}
+	\item<4-> \textcolor{leafnode}{There's a change of error.}
+\end{itemize}
+\end{minipage}
+%
+\begin{minipage}{.60\linewidth}
+\begin{figure}
+	\footnotesize
+	\centering
+	\def\svgwidth{.8\linewidth}
+	\input{fig/aphylo.pdf_tex}
+\end{figure}
+\end{minipage}
+
 
 \normalsize
 
-% 
-% The general points of the model
-% \begin{itemize}[<+->]
-% \item The rootnode in a phylogenetic tree is the best idea we have about the past, meaning,
-% it could be that the tree has more behind, i.e. so functions may be gained since the beginning.
-% \item At each step in evolution (interior node), there is a probability that the gene may
-% gain/loss the function.
-% \item Those probabilities vary depending on the type of the node: We belive that functional
-% changes may happen at Duplication nodes.
-% \end{itemize}
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[label=aphylographicalviewcont]
 \frametitle{An evolutionary model of gene functions: Formal statement}
 
+\includegraphics[width=.5\linewidth]{aphylo.pdf}
+
 \begin{itemize}[<+->]
-\item The whole is based on the markov-assumption: The current state of the gene can be
-fully explained by its parent(s).
+\item Gain and loss also depend on the type of the parent node
+\hyperlink{duplicationvsspeciation}{\beamerbutton{speciation vs duplication}}
 
-\item For this we use Felsensteins' pruning algorithm (also known as...)
+\item We use Felsensteins' pruning algorithm \hyperlink{aphyloalgorithmicview}{\beamergotobutton{algorithmic view}} (linear complexity)
 
-Formally
-
-$$
-P(x = 1) = P(x = 1| x_p = 0)P(\mbox{Gain}) + P(x = 1| x_p = 1)P(\mbox{No loss})
-$$
+\item Full framework has been implemented in the \aphylopkg{} R package \hyperlink{aphylopkg}{\beamergotobutton{more}}.
 \end{itemize}
 
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Paper 2: Estimation of the model}
-The model has (so far) 7 fixed parameters
-\begin{description}
-\item[$\psi_0, \psi_1$] Probability of making a mistake (mislabel)
-\item[$\mu_{d0}, \mu_{d1}$] Probability of functional gain/loss (duplication nodes)
-\item[$\mu_{s0}, \mu_{s1}$] Probability of functional gain/loss (other nodes)
-\item[$\pi$] Probability that the root has the function
-\end{description}
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[label=aphylo]
-\frametitle{Paper 2: Estimation of the model (cont'd)}
-\begin{itemize}
-\item We developed a full set of tools (C++ library + R pacakge) for this framework
-\hyperlink{aphylopkg}{\beamergotobutton{more}}
-\item Estimation is done via: MLE, MAP, and MCMC (using an adaptive kernel)
-\item Posterior probabilities are estimated using the conditional on the observed data.
-\item To evaluate performance, we used two datasets: manually (fully) annotated (inferred) trees, and experimentally annotated trees
-\end{itemize}
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -719,14 +662,83 @@ joint models
 \end{frame}
 
 % ------------------------------------------------------------------------------
+\begin{frame}[label=aphyloalgorithmicview]
+\frametitle{An evolutionary model of gene functions (algorithmic view)}
+
+\footnotesize
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{A phylogenetic tree, $\{\pi, \mu, \psi\}$(Model probabilities)}
+\KwResult{An annotated tree}
+%\pause
+\For{$n \in PostOrder(N)$}{
+  $\mbox{\bf\color{usccardinal}Nodes gain/loss function depending on their parent}$\;%\pause
+  \Switch{class of $n$}{
+    \uCase{root node}{
+      Gain function with probability $\pi$\;
+    }%\pause
+    \uCase{interior node} {%\pause
+      \lIf{Parent has the function}{Keep it with prob. $(1-\mu_1)$}%\pause
+      \lElse{Gain it with prob. $\mu_0$}%\pause
+    }
+  }%\pause
+  $\mbox{\bf\color{usccardinal}Finally, we allow for mislabeling}$\;%\pause
+  \uIf{$n$ is leaf}{%\pause
+    \lIf{has the function}{Mislabel with prob. $\psi_1$}%\pause
+    \lElse{Mislabel with prob. $\psi_0$}%\pause
+  }
+}
+\end{algorithm}
+
+\hyperlink{aphylographicalviewcont}{\beamergotobutton{go back}}
+
+\normalsize
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label = duplicationvsspeciation]
+\frametitle{Speciation}
+\begin{figure}
+\centering
+\def\svgwidth{.8\linewidth}
+\tiny
+% Source 
+\input{fig/Drosophila_speciation_experiment.pdf_tex}
+\caption{\citeA{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
+\end{figure}
+
+\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Duplication}
+\begin{figure}
+\centering
+\def\svgwidth{.6\linewidth}
+\tiny
+% Source : https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg
+\input{fig/Evolution_fate_duplicate_genes_-_vector.pdf_tex}
+\caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
+\end{figure}
+
+\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
 \begin{frame}[label=aphylopkg]
 \frametitle{The \aphylopkg{}}
 
 \begin{itemize}
-\item TBF
+\item Pruning algorithm implemeted in C++ using the \texttt{pruner} template library (implemeted in this project).
+\item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
+\item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
+(also implemeted as part of this project)
 \end{itemize}
 
-\hyperlink{aphylo}{\beamerreturnbutton{go back}}
+\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
 \end{frame}
 
 \end{document}
