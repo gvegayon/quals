@@ -9,7 +9,7 @@
 \usepackage{booktabs}
 \linespread{1.3}
 \usepackage{tabularx}
-\usepackage{textpos}  % for the textblock* environment
+% \usepackage{textpos}  % for the textblock* environment
 \usepackage{geometry}
 \usepackage{algorithm2e}
 \usepackage{amsmath, amssymb}
@@ -19,61 +19,8 @@
 \definecolor{suffstat}{RGB}{10,159,0}
 \definecolor{normconst}{RGB}{87,38,231}
 
-% USC Colors
-\definecolor{usccardinal}{RGB}{153,27,30}
-\definecolor{uscgold}{RGB}{255,204,0}
-\definecolor{usclightgray}{gray}{.7}
-\definecolor{uscdarkgray}{gray}{.3}
-
-\usetheme{default}
-
-\setbeamercolor{title}{fg=uscgold, bg=usccardinal}
-\setbeamercolor{section in toc}{fg=usccardinal}
-\setbeamercolor{frametitle}{use=title, fg=title.fg, bg=title.bg}
-\setbeamercolor{item}{fg=uscdarkgray}
-\setbeamercolor{normal text}{fg=uscdarkgray}
-\setbeamercolor{author in head/foot}{use=title, bg=title.bg, fg=title.fg}
-\setbeamercolor{title in head/foot}{use=title, bg=title.bg, fg=title.fg}
-\setbeamercolor{author}{use=title, bg=title.bg, fg=title.fg}
-\setbeamercolor{date}{use=title, bg=title.bg, fg=title.fg}
-\setbeamercolor{institute}{use=title, bg=title.bg, fg=title.fg}
-\setbeamercolor{button}{bg=usccardinal, fg=uscgold}
-
-
-% Figures and tables caption
-\setbeamertemplate{caption}{
-{\bf\color{usccardinal}\insertcaptionname{} \insertcaptionnumber{}} \insertcaption
-}
-\setbeamercolor{caption name}{fg=usccardinal}
-
-
-% Naigation
-\makeatother
-\setbeamertemplate{footline}
-{
-  \leavevmode%
-  \hbox{%
-  \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
-    \usebeamerfont{author in head/foot}\insertshortauthor
-  \end{beamercolorbox}%
-  \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
-    \usebeamerfont{title in head/foot}\insertshorttitle\hspace*{3em}
-    \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
-  \end{beamercolorbox}}%
-  \vskip0pt%
-}
-\setbeamertemplate{navigation symbols}{}
-
-\addtobeamertemplate{frametitle}{}{%
-\begin{textblock*}{.1\textwidth}(.95\textwidth, -1cm)
-\includegraphics[width=1\textwidth]{4-Line_KeckSOMofUSC_CardOnGold1.eps}
-\end{textblock*}
-}
-
-
-% Avoid appendix showin in toc -------------------------------------------------
-% \nobibintoc
-% ------------------------------------------------------------------------------
+% Noice!
+\usetheme{usckeck}
 
 \title[Stat. Comp. Bioinf \& SocNets.]{Statistical and computational methods for bioinformatics and social network analysis\linebreak{\small or how did I learn to stop worrying and love the bomb}}
 \author[GGVY]{George G Vega Yon}
@@ -97,26 +44,43 @@
 % \SweaveOpts{concordance=TRUE}
 
 % ------------------------------------------------------------------------------
-\setbeamercolor{background canvas}{bg=usccardinal}
 \begin{frame}[noframenumbering]
 \maketitle
 \end{frame}
-\setbeamercolor{background canvas}{bg=}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Motivation}
+
+\begin{center}
+\large
+\textcolor{usccardinal}{\bf Statistical and computational methods for\\ %
+bioinformatics and social network analysis}
+\end{center}
+
+\begin{itemize}
+\item We live in a non-{\it IID} world.
+\item Some times, looking the whole helps understanding the parts.
+\item We have the computational tools to do such.
+\end{itemize}
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \section{Paper 1: Exponential Random Graph Models for Small Networks}
 \frame{\frametitle{Contents}\tableofcontents}
 \cursection
 
+% \frame{\sectionpage}
+
 \begin{frame}
 \frametitle{What are Exponential Random Graph Models}
 
-Exponential Family Random Graph Models, aka ERGMs are:\pause
+Exponential Family Random Graph Models, aka \alert{ERGMs} are:\pause
 
 \begin{itemize}[<+->]
 \item Statistical models of (social) networks
 \item In simple terms: statistical inference on what network patterns/structures/motifs
-govern the data-generating process\pause
+govern the data-generating process
 \begin{figure}
 \includegraphics[width=.6\linewidth]{friendly-terms.pdf}
 \end{figure}
@@ -127,20 +91,25 @@ govern the data-generating process\pause
 % ------------------------------------------------------------------------------
 \begin{frame}[label=ergmeq]
 \frametitle{ERGMs (cont'd)}
+\begin{figure}
 \centering
 \includegraphics[width=.7\linewidth]{parts-of-ergm.pdf}
+\end{figure}
+
+\uncover<2->{The normalizing constant has $2^{n(n-1)}$ terms!}
+
+\vfill\hfill \hyperlink{ergmterms}{\beamergotobutton{more on terms}}
 \end{frame}
 
-\hyperlink{ergmterms}{\beamergotobutton{more on terms}}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=art]
 \frametitle{ERGMs: State of the Art}
 \pause
-Small-large (dozens to a couple of thousand vertices) networks
+Medium-large (dozens to a couple of thousand vertices) networks
 
 \begin{itemize}
-\item Markov Chain Monte Carlo (MCMC) based approaches like MC-MLE or Robbins-Monro Stochastic approximation. \hyperlink{mcmle}{\beamergotobutton{details}}
+\item Markov Chain Monte Carlo (MCMC) based approaches like MC-MLE or Robbins-Monro Stochastic Approximation. \hyperlink{mcmle}{\beamergotobutton{details}}
 \item Maximum Pseudo Likelihood (MPLE)
 \end{itemize}\pause
 
@@ -152,33 +121,53 @@ large-huge networks (up to the millions of vertices)
 \item Equilibrium Expectation Algorithm (millions of vertices)
 \end{itemize}\pause
 
-What about tiny to small networks?
+What about small networks?
 
 \end{frame}
 
+% 
+% % ------------------------------------------------------------------------------
+% \begin{frame}
+% \frametitle{Do we care about small networks?}
+% \begin{figure}
+% \centering
+% \includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
+% \end{figure}
+% \end{frame}
+
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{A frame with examples of small networks...}
-\begin{figure}
-\centering
-\includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
-\end{figure}
+\frametitle{Do we care about small networks?}
+
+\begin{minipage}{.40\linewidth}
+We see small networks everywhere\pause
+
+\begin{itemize}[<+->]
+\item Families and friends
+\item Small teams
+\item Egocentric networks
+\item Online networks (sometimes)
+\item etc.
+\end{itemize}
+\end{minipage}\pause
+\hfill
+\begin{minipage}{.55\linewidth}
+\includegraphics[width=.95\linewidth]{american-chopper-argument-ergmitos.png}
+\end{minipage}
+
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{ERGMs for small networks}
 
-MC-MLE works great (we have some simulations showing this), but it has some
-problems:\pause
+From the methodological point of view, current methods are great, but:\pause
 
-\begin{itemize}[<+->]
-\item Possible accuracy issues (error rates)
-\item Prone to degeneracy problems (sampling and existance of MLE)
-\item It is not MLE,
+\begin{itemize}
+\item Possible accuracy issues (error rates)\pause
+\item Prone to degeneracy problems (sampling and existance of MLE)\pause
+\item It is not MLE...
 \end{itemize}
-
-What shall we do then?
 
 \end{frame}
 
@@ -188,28 +177,66 @@ What shall we do then?
 
 \pause
 \begin{itemize}[<+->]
+
 \item In the case of small-enough networks, computation of the likelihood becomes
 computationally feasible.
+
 \item For example, a network with 5 nodes has \Sexpr{formatC(2^(20), big.mark = ",", format ="d")}
 unique configurations.
+
 \item This allow us to directly compute {\bf\color{normconst} the normalizing constant}.
+
 \item Using the exact likelihood opens a huge window of methodological-possibilities.
-\end{itemize}\pause
-We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
+
+\item We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
+
+\end{itemize}
+
+
+
+
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Paper 1 Simulation Studies}
+\begin{frame}[label = ergmitoexample]
+\frametitle{\ergmitopkg{} example}
 
-In order to compare the MLE with the MC-MLE estimation method, we performed a simulation study with the following features:\pause
+\begin{minipage}{.4\linewidth}
+\begin{figure}
+\centering
+\includegraphics[width = .9\linewidth]{fivenets_graphs.pdf}
+\caption{Random sample of 5 networks simulated using a negative}
+\end{figure}
+\end{minipage}
+\hfill
+\begin{minipage}{.55\linewidth}
+\pause
+\footnotesize
+\begin{table}
+\begin{tabular}{l*{2}{m{.2\linewidth}<\centering}}
+\hline
+ & Edgecount & Full model \\
+\hline
+Edgecount             & $-0.69^{*}$ & $-1.70^{**}$ \\
+                      & $(0.27)$    & $(0.54)$     \\
+Homophily (on Gender) & & $1.59^{*}$   \\
+                      & & $(0.64)$     \\
+\hline
+AIC                   & 78.38       & 73.34        \\
+BIC                   & 80.48       & 77.53        \\
+Log Likelihood        & -38.19      & -34.67       \\
+Num. networks         & 5           & 5            \\
+\hline
+\multicolumn{3}{l}{\scriptsize{Standard errors in parenthesis. $^{***}p<0.001$, $^{**}p<0.01$, $^*p<0.05$}}
+\end{tabular}
+\caption{Fitted ERGMitos using the fivenets dataset.}
+\label{table:coefficients}
+\end{table}
+\normalsize
+\end{minipage}\pause
 
-\begin{itemize}[<+->]
-\item Draw 20,000 samples of groups of small networks
-\item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
-\item Each group could have from 5 to 300 small networks
-\item We estimated the models using MC-MLE and MLE.
-\end{itemize}
+We performed a large simulation study \hyperlink{ergmitodgp}{\beamergotobutton{more}}
+comparing MC-MLE (ergm) with MLE (ergmito).
 
 \end{frame}
 
@@ -248,20 +275,38 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 \includegraphics[width=.6\linewidth]{bias-elapsed-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
 
-\hyperlink{ergmsims}{\beamergotobutton{more results}}
+\vfill\hfill\hyperlink{ergmsims}{\beamergotobutton{more results}}
 
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 1: Key takeaway}
-\pause
+\frametitle{Paper 1: Exponential Random Graph Models for Small Networks}
+
+{\bf \large Key takeaways}
+\setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
+\begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}[<+->]
-\item Developed a new extension of ERGMs using exact statistics for small networks
+\item New extension of ERGMs using exact statistics for small networks
 (families, teams, ego-centered, etc.)
 \item Performance: Same (un)bias, Lower Type I error rates, (way) faster.
 \item Opens the door the new methods.
 \end{itemize}
+\end{beamercolorbox}
+
+\vfill\pause
+
+{\bf \large Next steps}
+\begin{beamercolorbox}[dp=1ex]{conclusions}
+\begin{itemize}[<+->]
+\item Revisit measurment of goodness-of-fit.
+\item Explore extending this method for (very) large networks.
+\end{itemize}
+\end{beamercolorbox}
+
+
+
+
 \end{frame}
 
 
@@ -271,7 +316,25 @@ In order to compare the MLE with the MC-MLE estimation method, we performed a si
 
 % ------------------------------------------------------------------------------
 \begin{frame}
+\frametitle{Gene functions}
+
+The Gene Ontology
+
+\begin{itemize}[<+->]
+\item Three domains: Cellular component, molecular function, biological process.
+\item Currently, the Gene Ontology Project has: 44,945 validated terms, $\sim$ 6,400,000
+annotations on $\sim$ 1,150,000 species.
+\item Of all annotations, about $\sim$ 500,000 are on human genes.
+\item Knowledge about gene functions can accelerate bio-medical research.
+\end{itemize}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
 \frametitle{Gene Functional Annotations: The Gene Ontology Project}
+
+Example of GO term
 
 \begin{table}
 \footnotesize
@@ -287,41 +350,59 @@ characteristic way to propel blood through the body. Source: GOC:dph \\
 \bottomrule
 \end{tabular}
 \caption{Heart Contraction Function. source: \href{http://amigo.geneontology.org/amigo/term/GO:0060047}{amigo.geneontology.org}}
-\end{table}
+\end{table}\pause
 
-\def\tmpwidth{.15\linewidth}
-\begin{table}
-\footnotesize
-\begin{tabular}{*{4}{p{\tmpwidth}<\centering}}
-\includegraphics[width=1\linewidth]{cat.jpg} \linebreak pthr10037 & %
-\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak \textbf{pthr11521} & %
-\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak \textbf{pthr11521} & %
-\includegraphics[width=1\linewidth]{horse.jpg} \linebreak pthr24356
-\end{tabular}
-\end{table}
-
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Phylogenetic Trees}
-\pause
-\begin{itemize}[<+->]
-\item It can be very general: think of the tree of life
-\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
-gene level (using sequence-alignment methods, i.e. comparing gene sequences to see how much similar/different two genes are between and within species (whattt!)).
-\item A single phylogenetic tree can host multiple species
-\end{itemize}
+You know what is interesting about this function?
 
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[t]
 
-<<random-tree, echo=FALSE, messages=FALSE, out.width=".6\\linewidth", fig.align='center'>>=
-set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
+These four species have a gene with that function... \uncover<2->{and two of %
+these are part of the same evolutionary tree!}
+
+\vfill
+
+\def\tmpwidth{.30\linewidth}
+\begin{table}
+\footnotesize
+\begin{tabular}{*{2}{m{\tmpwidth}<\centering}}
+\only<1>{\includegraphics[width=1\linewidth]{cat.jpg}} %
+  \only<2>{\includegraphics[width=.4\linewidth]{cat.jpg}} \linebreak pthr10037 & %
+\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak \textbf{pthr11521} \\ %
+\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak \textbf{pthr11521} & %
+\only<1>{\includegraphics[width=1\linewidth]{horse.jpg}} %
+  \only<2>{\includegraphics[width=.4\linewidth]{horse.jpg}} \linebreak pthr24356
+\end{tabular}
+\end{table}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Phylogenetic Trees}
+\begin{minipage}{.4\linewidth}
+\pause
+\begin{itemize}[<+->]
+\item It can be very general: think of the tree of life
+\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
+gene level.
+\item A single phylogenetic tree can host multiple species
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}{.5\linewidth}
+\uncover<5->{
+<<random-tree, echo=FALSE, messages=FALSE, out.width=".75\\linewidth", fig.align='center', fig.cap="Random annotated phylogenetic tree.">>=
+oldpar <- par(mai=rep(0, 4))
+set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2),
+                   main = "")
+par(oldpar)
 @
-
+}
+\end{minipage}
+\vfill
+\uncover<6->{\textcolor{usccardinal}{\bf We can use the evolutionary tree to infer presence/absence of gene functions!}}
 
 \end{frame}
 
@@ -329,7 +410,7 @@ set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=aphylographicalview]
-\frametitle{An evolutionary model of gene functions: Formal statement}
+\frametitle{An evolutionary model of gene functions}
 
 \definecolor{rootnode}{RGB}{0,159,211}
 \definecolor{innernode}{RGB}{90,159,89}
@@ -341,7 +422,7 @@ set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
 \begin{itemize}
 	\item<2-> \textcolor{rootnode}{Initial (spontaneous) gain of function}.
 	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on the state of its' parents. ({\bf markov process})}
-	\item<4-> \textcolor{leafnode}{There's a change of error.}
+	\item<4-> \textcolor{leafnode}{There's a chance of error.}
 \end{itemize}
 \end{minipage}
 %
@@ -361,7 +442,7 @@ set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=aphylographicalviewcont]
-\frametitle{An evolutionary model of gene functions: Formal statement}
+\frametitle{An evolutionary model of gene functions (cont'd)}
 
 \includegraphics[width=.5\linewidth]{aphylo.pdf}
 
@@ -378,12 +459,12 @@ set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2))
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 2: Pooled estimation}
+\frametitle{Prediction with real data}
 
 \begin{table}[ht]
 \centering
 \scalebox{0.6}{
-\begin{tabular}{l*{8}{m{0.14\linewidth}}}
+\begin{tabular}{l*{2}{m{0.14\linewidth}}*{2}{>{\bf\large}m{0.14\linewidth}}*{4}{m{0.14\linewidth}}}
   \toprule
  & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) \\ 
   \midrule
@@ -409,20 +490,20 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 
 \end{frame}
 
+% % ------------------------------------------------------------------------------
+% \begin{frame}
+% \frametitle{Paper 2: Pooled estimation (worth it?)}
+% 
+% \begin{figure}
+% \centering
+% \includegraphics[width=.5\linewidth]{comparing-accuracy-1.pdf}
+% \end{figure}
+% 
+% \end{frame}
+
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 2: Pooled estimation (worth it?)}
-
-\begin{figure}
-\centering
-\includegraphics[width=.5\linewidth]{comparing-accuracy-1.pdf}
-\end{figure}
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Paper 2: Leave-one-out predictions}
+\frametitle{Prediction with real data: Leave-one-out}
 
 \begin{figure}
 \centering
@@ -433,7 +514,7 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 2: Out-of-sample-predictions}
+\frametitle{Prediction with real data: Out-of-sample prediction}
 
 \begin{figure}
 \centering
@@ -444,48 +525,46 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Paper 2: Key takeaways}
-\pause
+\frametitle{Paper 2: On the prediction of gene functions using phylogenetic trees}
+
+{\bf \large Key takeaways}
+\setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
+\begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}[<+->]
-\item (Yet another) model for predicting gene functions using phylogenetics
-\item Big difference... computationally scalable
-\item Meaningful biological results
-\item Preliminary accuracy results comparable to state-of-the-art phylo-based
-models
+\item (Yet another) model for predicting gene functions using phylogenetics.
+\item Big difference... computationally scalable.
+\item Meaningful biological results.
+\item Preliminary accuracy results comparable to state-of-the-art phylo-based models.
 \end{itemize}
-\end{frame}
+\end{beamercolorbox}
 
-% ------------------------------------------------------------------------------
-\section{Future directions}
-\begin{frame}
-\frametitle{Future directions: ERGMitos}
+\vfill\pause
 
-Possible venues to continue\pause
-
+{\bf \large Next steps}
+\begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}[<+->]
-\item Identify an adequate test for goodness-of-fit assesment
-\item Extend to estimation of large graphs by splitting the networks in induced-subgraphs
-\end{itemize}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Future directions: Gene functional prediction}
-
-Possible venues to continue\pause
-
-\begin{itemize}[<+->]
-\item Incorporate more external information using leaf(and node?) level features.
 \item Adapt the model to incorporate joint estimation of functions using pseudo-likelihood.
-
 $$
 P(a, b, c) \approx P(a,b)P(b,c)P(a,c)
 $$
 \item Make the model hierarchical when pooling trees: different mutation rates.
 \end{itemize}
+\end{beamercolorbox}
 
 \end{frame}
 
+% % ------------------------------------------------------------------------------
+% \section{Future directions}
+% \begin{frame}
+% 
+% \end{frame}
+
+\begin{frame}
+\maketitle
+\begin{center}
+\scalebox{2}{\textcolor{uscgold}{Thanks!}}
+\end{center}
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \section{Things that are very interesting but I most probably won't have any time to discuss with the attendees}
@@ -534,7 +613,7 @@ Here are some by-products of my research here at USC
 \end{tabular}
 \end{figure}
 
-\hyperlink{ergmeq}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{ergmeq}{\beamerreturnbutton{go back}}
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -559,7 +638,7 @@ This consists on the folling steps
   \end{enumerate}
 \end{enumerate}
 
-\hyperlink{art}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{art}{\beamerreturnbutton{go back}}
 
 
 \end{frame}
@@ -576,7 +655,24 @@ joint models
 \item Getting ready for CRAN!
 \end{itemize}
 
-\hyperlink{ergmito}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{ergmito}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=ergmitodgp]
+\frametitle{Paper 1 Simulation Studies}
+
+We performed a simulation study with the following features:
+
+\begin{itemize}[<+->]
+\item Draw 20,000 samples of groups of small networks
+\item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
+\item Each group could have from 5 to 300 small networks
+\item We estimated the models using MC-MLE and MLE.
+\end{itemize}
+
+\vfill\hfill\hyperlink{ergmitoexample}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
@@ -601,7 +697,7 @@ joint models
 \includegraphics[width=.6\linewidth]{bias-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
 
-\hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
@@ -609,7 +705,7 @@ joint models
 \begin{frame}[label=aphyloalgorithmicview]
 \frametitle{An evolutionary model of gene functions (algorithmic view)}
 
-\footnotesize
+\scalebox{.7}{
 
 \begin{algorithm}[H]
 \SetAlgoLined
@@ -634,10 +730,11 @@ joint models
   }
 }
 \end{algorithm}
+}
 
-\hyperlink{aphylographicalviewcont}{\beamergotobutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamergotobutton{go back}}
 
-\normalsize
+
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -652,7 +749,7 @@ joint models
 \caption{\citeA{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
 \end{figure}
 
-\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
@@ -667,7 +764,7 @@ joint models
 \caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
 \end{figure}
 
-\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
@@ -682,7 +779,7 @@ joint models
 (also implemeted as part of this project)
 \end{itemize}
 
-\hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
 \end{frame}
 
 \end{document}
