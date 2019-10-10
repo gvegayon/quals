@@ -26,14 +26,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="377.55799"
+     inkscape:cx="167.95134"
      inkscape:cy="356.92178"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1855"
      inkscape:window-height="1056"
-     inkscape:window-x="1985"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
   <metadata
@@ -56,14 +56,13 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#5a9f59;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="26.145382"
-       y="182.60864"
+       x="-11.019845"
+       y="196.09952"
        id="text68"><tspan
          sodipodi:role="line"
-         x="26.145382"
-         y="182.60864"
-         style="fill:#5a9f59;fill-opacity:1;stroke-width:0.26458332px"
-         id="tspan72">\uncover&lt;3-&gt;{$\color{innernode}\begin{aligned}\mbox{Pr}(0 \to 1) &amp; = \mu_{0}\\ \mbox{Pr}(1 \to 0) &amp; = \mu_{1} \end{aligned}$}</tspan></text>
+         id="tspan67"
+         x="-11.019845"
+         y="196.09952">\uncover&lt;3-&gt;{$\color{innernode}\begin{aligned}\mbox{Pr}(0 \to 1|Type=t) &amp; = \mu_{t0}\\ \mbox{Pr}(1 \to 0|Type=t) &amp; = \mu_{t1} \end{aligned}$}</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ff6b00;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -88,7 +87,7 @@
          cy="92.265488"
          cx="116.22248"
          id="path10-4"
-         style="opacity:1;fill:#5a9f59;fill-opacity:0.99425286;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+         style="opacity:1;fill:#5a9f59;fill-opacity:0.99425288;fill-rule:nonzero;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
       <path
          inkscape:connection-end="#path10-4"
          inkscape:connection-start="#path10"

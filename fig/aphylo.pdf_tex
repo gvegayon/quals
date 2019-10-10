@@ -53,9 +53,9 @@
   \begin{picture}(1,0.56439471)%
     \lineheight{1}%
     \setlength\tabcolsep{0pt}%
-    \put(0.12999284,0.03499534){\color[rgb]{0.35294118,0.62352941,0.34901961}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\uncover<3->{$\color{innernode}\begin{aligned}\mbox{Pr}(0 \to 1) & = \mu_{0}\\ \mbox{Pr}(1 \to 0) & = \mu_{1} \end{aligned}$}\end{tabular}}}}%
+    \put(-0.07582993,-0.03971776){\color[rgb]{0.35294118,0.62352941,0.34901961}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\uncover<3->{$\color{innernode}\begin{aligned}\mbox{Pr}(0 \to 1|Type=t) & = \mu_{t0}\\ \mbox{Pr}(1 \to 0|Type=t) & = \mu_{t1} \end{aligned}$}\end{tabular}}}}%
     \put(0.72340071,0.412534){\color[rgb]{1,0.41960784,0}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\uncover<4->{$\color{leafnode}\begin{aligned}\mbox{Pr}(\mbox{Mislabel }0) & = \psi_0\\ \mbox{Pr}(\mbox{Mislabel }1) & = \psi_1 \end{aligned}$}\end{tabular}}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{aphylo.pdf}}%
-    \put(0,0.19929211){\color[rgb]{0,0.62352941,0.82745098}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\uncover<1->{}\uncover<2->{$\color{rootnode}\mbox{Pr}(1) = \pi$}\end{tabular}}}}%
+    \put(-0,0.19929211){\color[rgb]{0,0.62352941,0.82745098}\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\uncover<1->{}\uncover<2->{$\color{rootnode}\mbox{Pr}(1) = \pi$}\end{tabular}}}}%
   \end{picture}%
 \endgroup%

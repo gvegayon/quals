@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 10pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[aspectratio=169, 9pt, handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -63,6 +63,10 @@
 \usepackage{geometry}
 \usepackage{algorithm2e}
 \usepackage{amsmath, amssymb}
+
+\usepackage{natbib}
+\renewcommand{\bibsection}{\subsubsection*{\bibname } }
+
 
 % Styles
 \usepackage{xcolor}
@@ -254,7 +258,7 @@ unique configurations.
 \begin{figure}
 \centering
 \includegraphics[width = .9\linewidth]{fivenets_graphs.pdf}
-\caption{Random sample of 5 networks simulated using a negative}
+\caption{Random sample of 5 networks simulated using the ergmito package}
 \end{figure}
 \end{minipage}
 \hfill
@@ -365,12 +369,33 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Gene functions}
+\frametitle{Genes}
 
-The Gene Ontology
+How we organize the information about genes (According to the Gene Ontology)
 
+\def\tmpwidth{.9\linewidth}
+
+\begin{table}
+\begin{tabular}{*{3}{m{.31\linewidth}<{\centering}}}
+\onslide<2->\bf Molecular function & %
+\onslide<3->\bf Cellular component & %
+\onslide<4->\bf Biological process \\
+\onslide<2->\href{http://amigo.geneontology.org/amigo/term/GO:0005215}{Active transport GO:0005215}& %
+\onslide<3->\href{http://amigo.geneontology.org/amigo/term/GO:0004016}{Mitochondrian GO:0004016} & %
+\onslide<4->\href{http://amigo.geneontology.org/amigo/term/GO:0060047}{Heart contraction GO:0060047} \\
+\onslide<2->\includegraphics[width=\tmpwidth]{Sodium-potassium_pump_and_diffusion.png} & %
+\onslide<3->\includegraphics[width=\tmpwidth]{640px-Animal_Cell-svg.png} & % 
+\onslide<4->\includegraphics[width=\tmpwidth]{Systolevs_Diastole.png}
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Gene Functional Annotations: The Gene Ontology Project}
 \begin{itemize}[<+->]
-\item Three domains: Cellular component, molecular function, biological process.
+% \item Three domains: Cellular component, molecular function, biological process.
 \item Currently, the Gene Ontology Project has: 44,945 validated terms, $\sim$ 6,400,000
 annotations on $\sim$ 1,150,000 species.
 \item Of all annotations, about $\sim$ 500,000 are on human genes.
@@ -445,7 +470,7 @@ gene level.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/random-tree-1} 
+{\centering \includegraphics[width=.85\linewidth]{figure/random-tree-1} 
 
 }
 
@@ -456,11 +481,17 @@ gene level.
 \end{knitrout}
 }
 \end{minipage}
-\vfill
-\uncover<6->{\textcolor{usccardinal}{\bf We can use the evolutionary tree to infer presence/absence of gene functions!}}
-
 \end{frame}
 
+
+%
+\frame{
+\centering
+\Large
+We can use \textcolor{usccardinal}{\bf {\Huge the evolutionary tree}} \\ 
+to infer presence/absence of \\
+ \textcolor{usccardinal}{{\Huge gene functions (annotations)}!}
+}
 
 
 % ------------------------------------------------------------------------------
@@ -471,44 +502,27 @@ gene level.
 \definecolor{innernode}{RGB}{90,159,89}
 \definecolor{leafnode}{RGB}{255,107,0}
 
-\small
-
-\begin{minipage}{.38\linewidth}
+\begin{minipage}{.48\linewidth}
 \begin{itemize}
 	\item<2-> \textcolor{rootnode}{Initial (spontaneous) gain of function}.
-	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on the state of its' parents. ({\bf markov process})}
-	\item<4-> \textcolor{leafnode}{There's a chance of error.}
+	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on: (a) the state of its' parents ({\bf markov process}), and (b) the type of node \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}}
+	\item<4-> \textcolor{leafnode}{We control for human error.}
 \end{itemize}
 \end{minipage}
 %
-\begin{minipage}{.60\linewidth}
+\begin{minipage}{.50\linewidth}
 \begin{figure}
 	\footnotesize
 	\centering
-	\def\svgwidth{.8\linewidth}
+	\def\svgwidth{.9\linewidth}
 	\input{fig/aphylo.pdf_tex}
 \end{figure}
 \end{minipage}
 
+\vspace{1.5cm}
 
-\normalsize
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[label=aphylographicalviewcont]
-\frametitle{An evolutionary model of gene functions (cont'd)}
-
-\includegraphics[width=.5\linewidth]{aphylo.pdf}
-
-\begin{itemize}[<+->]
-\item Gain and loss also depend on the type of the parent node
-\hyperlink{duplicationvsspeciation}{\beamerbutton{speciation vs duplication}}
-
-\item We use Felsensteins' pruning algorithm \hyperlink{aphyloalgorithmicview}{\beamergotobutton{algorithmic view}} (linear complexity)
-
-\item Full framework has been implemented in the \aphylopkg{} R package \hyperlink{aphylopkg}{\beamergotobutton{more}}.
-\end{itemize}
+\uncover<5->{We implemented the model using Felsensteins' pruning algorithm (linear complexity) in the
+R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 
 \end{frame}
 
@@ -518,8 +532,8 @@ gene level.
 
 \begin{table}[ht]
 \centering
-\scalebox{0.6}{
-\begin{tabular}{l*{2}{m{0.14\linewidth}}*{2}{>{\bf\large}m{0.14\linewidth}}*{4}{m{0.14\linewidth}}}
+\scalebox{0.7}{
+\begin{tabular}{l*{2}{m{0.1\linewidth}<\centering}*{2}{>{\bf\large}m{0.1\linewidth}<\centering}*{4}{m{0.1\linewidth}<\centering}}
   \toprule
  & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) \\ 
   \midrule
@@ -585,7 +599,7 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 {\bf \large Key takeaways}
 \setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
-\begin{itemize}[<+->]
+\begin{itemize}
 \item (Yet another) model for predicting gene functions using phylogenetics.
 \item Big difference... computationally scalable.
 \item Meaningful biological results.
@@ -597,7 +611,7 @@ $\psi_0$ & 0.00 & 0.00 & 0.23 & 0.25 & 0.00 & 0.00 & 0.21 & 0.25 \\
 
 {\bf \large Next steps}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
-\begin{itemize}[<+->]
+\begin{itemize}
 \item Adapt the model to incorporate joint estimation of functions using pseudo-likelihood.
 $$
 P(a, b, c) \approx P(a,b)P(b,c)P(a,c)
@@ -804,7 +818,7 @@ We performed a simulation study with the following features:
 \caption{\citeA{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
 \end{figure}
 
-\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
