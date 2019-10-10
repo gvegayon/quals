@@ -11,8 +11,9 @@
 
 
 \mode<presentation>
-
 \RequirePackage{tikz}
+% \usetikzlibrary{calc}
+\usetikzlibrary{positioning}
 
 % Some images:
 
@@ -72,10 +73,16 @@
   \endgroup
   \vfill
   
-  % % Covering page number
-  % \begin{tikzpicture}[remember picture,overlay]
-  %       \node[at=(current page.south),anchor=bound,fill=blue, minimum width=\paperwidth, minimum height=.15\paperheight] {};
-  % \end{tikzpicture}
+  % Covering page number
+  \begin{tikzpicture}[remember picture,overlay]
+        \node[at=(current page.south),fill=uscgold, minimum width=\paperwidth, minimum height=.07\paperheight] (goldline) {};
+        % \node[at=(goldline.north west)+(.025\paperwidth, 0),anchor=south]  {\includegraphics[width=0.1\paperwidth]{2-Line_KeckSOMofUSC_CardOnGold1.eps}};
+  \end{tikzpicture}
+  
+  % % USC logo
+  % \begin{textblock*}{.2\paperwidth}(-.05\paperwidth, -.4cm)
+  % \includegraphics[width=1\textwidth]{2-Line_KeckSOMofUSC_CardOnGold1.eps}
+  % \end{textblock*}
 }
 
 % Part page: default
@@ -361,7 +368,8 @@
   \end{beamercolorbox}%
   \begin{beamercolorbox}[wd=.6\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
     \usebeamerfont{title in head/foot}\insertshorttitle\hspace*{3em}
-    \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+    % \insertframenumber{} / \inserttotalframenumber\hspace*{1ex}
+    \insertframenumber{} \hspace*{1ex}
   \end{beamercolorbox}}%
   \vskip0pt%
 }
