@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt, handout]{beamer}
+\documentclass[aspectratio=169, 9pt]{beamer}
 
 % \transdissolve[duration=0.2] % Only works with Adobe Acrobat
 
@@ -9,7 +9,7 @@
 \usepackage{booktabs}
 \linespread{1.3}
 \usepackage{tabularx}
-% \usepackage{textpos}  % for the textblock* environment
+\usepackage{makecell} % For makecell within tables
 \usepackage{geometry}
 \usepackage{algorithm2e}
 \usepackage{amsmath, amssymb}
@@ -29,9 +29,11 @@
 \title[Stat. Comp. Bioinf \& SocNets.]{Statistical and computational methods for bioinformatics and social network analysis\linebreak{\small or how did I learn to stop worrying and love the bomb}}
 \author[GGVY]{George G Vega Yon}
 \institute[USC-PREVMED]{University of Southern California, Department of Preventive Medicine}
+\date{October 10, 2019}
 
 % Some definitions
 \def\cursection{\frame{\frametitle{Contents}\tableofcontents[current]}}
+\newcommand{\ergmpkg}[0]{\texttt{ergm}}
 \newcommand{\ergmitopkg}[0]{\texttt{ergmito}}
 \newcommand{\aphylopkg}[0]{\texttt{aphylo}}
 \graphicspath{{.}{fig/}}
@@ -48,13 +50,13 @@
 % \SweaveOpts{concordance=TRUE}
 
 % ------------------------------------------------------------------------------
-\begin{frame}[noframenumbering]
+\begin{frame}%[noframenumbering]
 \maketitle
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Motivation}
+\frametitle{What motivates my research}
 
 \begin{center}
 \large
@@ -84,7 +86,7 @@ Exponential Family Random Graph Models, aka \alert{ERGMs} are:\pause
 \begin{itemize}[<+->]
 \item Statistical models of (social) networks
 \item In simple terms: statistical inference on what network patterns/structures/motifs
-govern the data-generating process
+govern social networks
 \begin{figure}
 \includegraphics[width=.6\linewidth]{friendly-terms.pdf}
 \end{figure}
@@ -129,16 +131,6 @@ What about small networks?
 
 \end{frame}
 
-% 
-% % ------------------------------------------------------------------------------
-% \begin{frame}
-% \frametitle{Do we care about small networks?}
-% \begin{figure}
-% \centering
-% \includegraphics[width=.6\linewidth]{american-chopper-argument-ergmitos.png}
-% \end{figure}
-% \end{frame}
-
 % ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Do we care about small networks?}
@@ -153,23 +145,24 @@ We see small networks everywhere\pause
 \item Online networks (sometimes)
 \item etc.
 \end{itemize}
-\end{minipage}\pause
+\end{minipage}
 \hfill
+\uncover<7->{
 \begin{minipage}{.55\linewidth}
 \includegraphics[width=.95\linewidth]{american-chopper-argument-ergmitos.png}
 \end{minipage}
-
+}
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{ERGMs for small networks}
+\frametitle{ERGMs for Small Networks}
 
 From the methodological point of view, current methods are great, but:\pause
 
 \begin{itemize}
 \item Possible accuracy issues (error rates)\pause
-\item Prone to degeneracy problems (sampling and existance of MLE)\pause
+\item Prone to degeneracy problems (sampling and existence of MLE)\pause
 \item It is not MLE...
 \end{itemize}
 
@@ -193,10 +186,7 @@ unique configurations.
 \item Using the exact likelihood opens a huge window of methodological-possibilities.
 
 \item We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
-
 \end{itemize}
-
-
 
 
 \end{frame}
@@ -219,9 +209,9 @@ unique configurations.
 \begin{table}
 \begin{tabular}{l*{2}{m{.2\linewidth}<\centering}}
 \hline
- & Edgecount & Full model \\
+ & Bernoulli & Full model \\
 \hline
-Edgecount             & $-0.69^{*}$ & $-1.70^{**}$ \\
+Edge-count             & $-0.69^{*}$ & $-1.70^{**}$ \\
                       & $(0.27)$    & $(0.54)$     \\
 Homophily (on Gender) & & $1.59^{*}$   \\
                       & & $(0.64)$     \\
@@ -254,7 +244,7 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 	\centering
 	\begin{tabular}{ccccc}
 		\toprule & & \multicolumn{2}{c}{P(Type I error)} \\ \cmidrule(r){3-4}
-		Sample size & N. Simulations & MC-MLE & MLE & chi2 \\ 
+		Sample size & N. Simulations & \makecell{MC-MLE \\ (\ergmpkg{})} & \makecell{MLE \\ (\ergmitopkg{})} & $\chi^2$ \\ 
 		\midrule
 		5 & 2,189 & 0.084 & 0.057 & 11.71 *** \\ 
 		10 & 2,330 & 0.070 & 0.045 & 12.46 *** \\ 
@@ -290,11 +280,11 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 {\bf \large Key takeaways}
 \setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
-\begin{itemize}[<+->]
+\begin{itemize}
 \item New extension of ERGMs using exact statistics for small networks
-(families, teams, ego-centered, etc.)
+(families, teams, etc.)
 \item Performance: Same (un)bias, Lower Type I error rates, (way) faster.
-\item Opens the door the new methods.
+\item Opens the door the new methods, e.g. Mixed effects, LRT, etc.
 \end{itemize}
 \end{beamercolorbox}
 
@@ -302,8 +292,8 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 {\bf \large Next steps}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
-\begin{itemize}[<+->]
-\item Revisit measurment of goodness-of-fit.
+\begin{itemize}
+\item Revisit measurement of goodness-of-fit.
 \item Explore extending this method for (very) large networks.
 \end{itemize}
 \end{beamercolorbox}
@@ -322,7 +312,7 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \begin{frame}
 \frametitle{Genes}
 
-How we organize the information about genes (According to the Gene Ontology)
+How we organize the information about genes (according to the Gene Ontology Project)
 
 \def\tmpwidth{.9\linewidth}
 
@@ -332,7 +322,7 @@ How we organize the information about genes (According to the Gene Ontology)
 \onslide<3->\bf Cellular component & %
 \onslide<4->\bf Biological process \\
 \onslide<2->\href{http://amigo.geneontology.org/amigo/term/GO:0005215}{Active transport GO:0005215}& %
-\onslide<3->\href{http://amigo.geneontology.org/amigo/term/GO:0004016}{Mitochondrian GO:0004016} & %
+\onslide<3->\href{http://amigo.geneontology.org/amigo/term/GO:0004016}{Mitochondria GO:0004016} & %
 \onslide<4->\href{http://amigo.geneontology.org/amigo/term/GO:0060047}{Heart contraction GO:0060047} \\
 \onslide<2->\includegraphics[width=\tmpwidth]{Sodium-potassium_pump_and_diffusion.png} & %
 \onslide<3->\includegraphics[width=\tmpwidth]{640px-Animal_Cell-svg.png} & % 
@@ -344,7 +334,7 @@ How we organize the information about genes (According to the Gene Ontology)
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Gene Functional Annotations: The Gene Ontology Project}
+\frametitle{The Gene Ontology Project}
 \begin{itemize}[<+->]
 % \item Three domains: Cellular component, molecular function, biological process.
 \item Currently, the Gene Ontology Project has: 44,945 validated terms, $\sim$ 6,400,000
@@ -357,7 +347,7 @@ annotations on $\sim$ 1,150,000 species.
 
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{Gene Functional Annotations: The Gene Ontology Project}
+\frametitle{The Gene Ontology Project}
 
 Example of GO term
 
@@ -393,19 +383,20 @@ these are part of the same evolutionary tree!}
 \begin{table}
 \footnotesize
 \begin{tabular}{*{2}{m{\tmpwidth}<\centering}}
-\only<1>{\includegraphics[width=1\linewidth]{cat.jpg}} %
-  \only<2>{\includegraphics[width=.4\linewidth]{cat.jpg}} \linebreak pthr10037 & %
-\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak \textbf{pthr11521} \\ %
-\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak \textbf{pthr11521} & %
-\only<1>{\includegraphics[width=1\linewidth]{horse.jpg}} %
-  \only<2>{\includegraphics[width=.4\linewidth]{horse.jpg}} \linebreak pthr24356
+\only<1>{\includegraphics[width=.95\linewidth]{cat.jpg}} %
+  \only<2->{\includegraphics[width=.4\linewidth]{cat.jpg}} \linebreak Felis catus pthr10037 & %
+\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak Oryzias latipes \textbf{pthr11521} \\ %
+\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak Anolis carolinensis \textbf{pthr11521} & %
+\only<1>{\includegraphics[width=.725\linewidth]{horse.jpg}} %
+  \only<2->{\includegraphics[width=.4\linewidth]{horse.jpg}} \linebreak Equus caballus pthr24356
 \end{tabular}
 \end{table}
+
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[t]
-\frametitle{Phylogenetic Trees}
+\frametitle{Phylogenetic Trees: The PANTHER classification system}
 \begin{minipage}{.4\linewidth}
 \pause
 \begin{itemize}[<+->]
@@ -413,14 +404,20 @@ these are part of the same evolutionary tree!}
 \item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
 gene level.
 \item A single phylogenetic tree can host multiple species
+\item The PANTHER project provides information about 15,524 trees w/ 1.7 million
+genes
 \end{itemize}
 \end{minipage}
 \hfill
 \begin{minipage}{.5\linewidth}
-\uncover<5->{
+\uncover<6->{
 <<random-tree, echo=FALSE, messages=FALSE, out.width=".85\\linewidth", fig.align='center', fig.cap="Random annotated phylogenetic tree.">>=
 oldpar <- par(mai=rep(0, 4))
-set.seed(115);plot(aphylo::rdrop_annotations(aphylo::raphylo(20, P = 2), .2),
+set.seed(115)
+tree <- aphylo::raphylo(20, P = 2)
+tree$tree$edge.length <- runif(nrow(tree$tree$edge))
+tree$tree$tip.label   <- paste("Gene", tree$tree$tip.label)
+plot(aphylo::rdrop_annotations(tree, .2),
                    main = "")
 par(oldpar)
 @
@@ -433,9 +430,13 @@ par(oldpar)
 \frame{
 \centering
 \Large
-We can use \textcolor{usccardinal}{\bf {\Huge the evolutionary tree}} \\ 
-to infer presence/absence of \\
- \textcolor{usccardinal}{{\Huge gene functions (annotations)}!}
+We can use \vspace{.5cm}
+
+\textcolor{usccardinal}{ {\Huge the evolutionary tree}} \vspace{.5cm}
+
+to infer presence/absence of \vspace{.5cm}
+
+ \textcolor{usccardinal}{{ \Huge gene functions (annotations)}!}
 }
 
 
@@ -450,7 +451,7 @@ to infer presence/absence of \\
 \begin{minipage}{.48\linewidth}
 \begin{itemize}
 	\item<2-> \textcolor{rootnode}{Initial (spontaneous) gain of function}.
-	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on: (a) the state of its' parents ({\bf markov process}), and (b) the type of node \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}}
+	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on: (a) the state of its' parents ({\bf Markov process}), and (b) the type of node \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}}
 	\item<4-> \textcolor{leafnode}{We control for human error.}
 \end{itemize}
 \end{minipage}
@@ -466,7 +467,7 @@ to infer presence/absence of \\
 
 \vspace{1.5cm}
 
-\uncover<5->{We implemented the model using Felsensteins' pruning algorithm (linear complexity) in the
+\uncover<5->{We implemented the model using Felsenstein's' pruning algorithm (linear complexity) in the
 R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 
 \end{frame}
@@ -580,6 +581,14 @@ $$
 \end{center}
 \end{frame}
 
+\renewcommand{\section}[2]{}%
+\appendix
+\begin{frame}[allowframebreaks]
+\frametitle{References}
+\bibliographystyle{apacite}
+\bibliography{bibliography.bib}
+\end{frame}
+
 % ------------------------------------------------------------------------------
 \section{Things that are very interesting but I most probably won't have any time to discuss with the attendees}
 
@@ -592,14 +601,6 @@ Here are some by-products of my research here at USC
 \item The fmcmc R package
 \end{itemize}
 
-\end{frame}
-
-\renewcommand{\section}[2]{}%
-\appendix
-\begin{frame}[allowframebreaks]
-\frametitle{References}
-\bibliographystyle{apacite}
-\bibliography{bibliography.bib}
 \end{frame}
 
 
@@ -636,11 +637,11 @@ Here are some by-products of my research here at USC
 
 One of the most popular methods for estimating ERGMs is the MC-MLE approach (citations here)
 
-This consists on the folling steps
+This consists on the following steps
 
 \begin{enumerate}
 \item Start from a sensible guess on what should be the population parameters
-(usually done using pseudo-MLE esimtation)
+(usually done using pseudo-MLE estimation)
 \item While the algorithm doesn't converge, do:
   \begin{enumerate}
   \item Simulate a stream of networks with the current state of the parameter,
@@ -663,9 +664,9 @@ This consists on the folling steps
 
 \begin{itemize}
 \item Implements estimation of ERGMs using exact statistics for small networks
-\item Metaprogramming allows specifying likelihood (and gradient) functions for
+\item Meta-programming allows specifying likelihood (and gradient) functions for
 joint models
-\item Includes tools for simulating, and postestimation checks
+\item Includes tools for simulating, and post-estimation checks
 \item Getting ready for CRAN!
 \end{itemize}
 
@@ -787,10 +788,10 @@ We performed a simulation study with the following features:
 \frametitle{The \aphylopkg{}}
 
 \begin{itemize}
-\item Pruning algorithm implemeted in C++ using the \texttt{pruner} template library (implemeted in this project).
+\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (implemented in this project).
 \item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
 \item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
-(also implemeted as part of this project)
+(also implemented as part of this project)
 \end{itemize}
 
 \vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
