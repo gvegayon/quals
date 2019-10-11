@@ -85,6 +85,18 @@
   \end{textblock*}
 }
 
+\defbeamertemplate*{section intro}{usckeck}[1][]
+{
+  % \setbeamercolor{background canvas}{bg=usccardinal}
+  \begin{tikzpicture}[remember picture,overlay]
+        \node[at=(current page.center),fill=usccardinal, minimum width=\paperwidth, minimum height=\paperheight] {};
+  \end{tikzpicture}
+  \vbox{}
+  \usebeamerfont{title}
+  \usebeamercolor[bg]{uscgold}
+  
+}
+
 % Part page: default
 
 \defbeamertemplate*{part page}{usckeck}[1][]

@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[aspectratio=169, 9pt, handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -221,7 +221,13 @@ From the methodological point of view, current methods are great, but:\pause
 \begin{frame}[label=ergmito]
 \frametitle{ERGMs for Small Networks}
 
-\pause
+\uncover<4->{
+\begin{figure}
+\centering
+\includegraphics[width=.5\linewidth]{parts-of-ergm.pdf}
+\end{figure}
+}
+
 \begin{itemize}[<+->]
 
 \item In the case of small-enough networks, computation of the likelihood becomes
@@ -230,7 +236,7 @@ computationally feasible.
 \item For example, a network with 5 nodes has 1,048,576
 unique configurations.
 
-\item This allow us to directly compute {\bf\color{normconst} the normalizing constant}.
+\item This allow us to directly compute {\bf\color{normconst} the normalizing constant}.\pause
 
 \item Using the exact likelihood opens a huge window of methodological-possibilities.
 
@@ -527,15 +533,7 @@ R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 \begin{frame}[t]
 \frametitle{Prediction with real data}
 
-\begin{minipage}{.55\linewidth}
-\begin{itemize}
-\item 141 functions (trees)
-\item Adaptive MCMC
-\item Took about 5 minutes each
-\end{itemize}
-\end{minipage}
-%
-\begin{minipage}{.35\linewidth}
+\begin{minipage}{.39\linewidth}
 \begin{table}[ht]
 \centering
 \scalebox{0.7}{
@@ -543,25 +541,36 @@ R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
   \toprule
  & & (1) & (2)  \\ 
   \midrule
-  \multicolumn{4}{l}{Mislabeling probabilities} \\
+  \multicolumn{2}{l}{Mislab. prob.} \\
   & $\psi_0$ & 0.23 & 0.25 \\ 
   & $\psi_1$ & 0.01 & 0.01 \\ 
-  \multicolumn{4}{l}{Gain/Loss at duplication nodes} \\
+  \multicolumn{2}{l}{\textcolor<4->{usccardinal}{\textbf<4->{Gain/Loss at dupl.}}} \\
   & $\mu_{d0}$ & 0.97 & 0.96 \\ 
   & $\mu_{d1}$ & 0.52 & 0.58 \\ 
-  \multicolumn{4}{l}{Gain/Loss at speciation nodes} \\
+  \multicolumn{2}{l}{\textcolor<4->{usccardinal}{\textbf<4->{Gain/Loss at spec.}}} \\
   & $\mu_{s0}$ & 0.05 & 0.06 \\ 
   & $\mu_{s1}$ & 0.01 & 0.02 \\ 
-  \multicolumn{4}{l}{Root node} \\
+  \multicolumn{2}{l}{Root node} \\
   & $\pi$ & 0.81 & 0.45  \\ 
 \midrule   
   & Prior & Uniform & Beta  \\ 
-  & AUC & 0.69 & 0.67 \\
+  & AUC (mean) & 0.69 & 0.67 \\
+  & AUC (median) & 0.81 & 0.75 \\
    \bottomrule
 \end{tabular}
 }
-\caption{Parameter estimates using different estimation methods, priors, and types of annotations.} 
+\caption{Parameter estimates using different priors.} 
 \end{table}
+%
+\end{minipage}
+\begin{minipage}{.59\linewidth}
+\begin{itemize}[<+->]
+\item 141 pooled functions (trees) with 7,388 genes with 0/1 annotations.
+\item Parameter estiamtes are actually probabilities.
+\item Data driven results (uninformative prior).
+\item \textcolor{usccardinal}{Biologically meaningful results.}
+\item Took about 5 minutes each.
+\end{itemize}
 \end{minipage}
 
 \end{frame}
@@ -607,8 +616,10 @@ R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 \setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}
-\item (Yet another) model for predicting gene functions using phylogenetics.
-\item Big difference... computationally scalable.
+\item Yet another model for predicting gene functions using phylogenetics.
+\item Big difference, this is computationally scalable. SIFTER (our benchmark)
+would take about 66 years (yes, years) to estimate a model for 100 families
+of size 300, we take about 5 minutes.
 \item Meaningful biological results.
 \item Preliminary accuracy results comparable to state-of-the-art phylo-based models.
 \end{itemize}
