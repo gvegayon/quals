@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt, handout]{beamer}
+\documentclass[aspectratio=169, 9pt]{beamer}
 
 % \transdissolve[duration=0.2] % Only works with Adobe Acrobat
 
@@ -29,7 +29,7 @@
 \title[Stat. Comp. Bioinf \& SocNets.]{Statistical and computational methods for bioinformatics and social network analysis\linebreak{\small or how did I learn to stop worrying and love the bomb}}
 \author[GGVY]{George G Vega Yon}
 \institute[USC-PREVMED]{University of Southern California, Department of Preventive Medicine}
-\date{October 10, 2019}
+\date{October 11, 2019}
 
 % Some definitions
 \def\cursection{\frame{\frametitle{Contents}\tableofcontents[current]}}
@@ -74,9 +74,14 @@ bioinformatics and social network analysis}
 % ------------------------------------------------------------------------------
 \section{Paper 1: Exponential Random Graph Models for Small Networks}
 \frame{\frametitle{Contents}\tableofcontents}
-\cursection
 
-% \frame{\sectionpage}
+\begin{frame}[t]
+\usebeamertemplate{section intro}{}{}
+\textcolor{uscgold}{
+\Large {\bf Exponential Random Graph Models for Small Networks} \vskip0.25em
+\large \textit{Joint with}: Andrew Slaughter and Kayla de la Haye
+}
+\end{frame}
 
 \begin{frame}
 \frametitle{What are Exponential Random Graph Models}
@@ -312,7 +317,15 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 % ------------------------------------------------------------------------------
 \section{Paper 2: On the prediction of gene functions using phylogenetic trees}
-\cursection
+
+
+\begin{frame}[t]
+\usebeamertemplate{section intro}{}{}
+\textcolor{uscgold}{
+\Large {\bf On the prediction of gene functions using phylogenetic trees} \vskip0.25em
+\large \textit{Joint with}: Paul D Thomas, Paul Marjoram, Huaiyu Mi, Duncan Thomas, and John Morrison
+}
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}

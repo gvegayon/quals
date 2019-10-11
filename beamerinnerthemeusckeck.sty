@@ -85,15 +85,17 @@
   \end{textblock*}
 }
 
-\defbeamertemplate*{section intro}{usckeck}[1][]
+\defbeamertemplate*{section intro}{usckeck}[2][]
 {
   % \setbeamercolor{background canvas}{bg=usccardinal}
   \begin{tikzpicture}[remember picture,overlay]
         \node[at=(current page.center),fill=usccardinal, minimum width=\paperwidth, minimum height=\paperheight] {};
   \end{tikzpicture}
   \vbox{}
-  \usebeamerfont{title}
-  \usebeamercolor[bg]{uscgold}
+  % \usebeamerfont{title}
+  {\Large \bf \textcolor{uscgold}{#1}} \vskip0.25em
+  {\bf \large \textcolor{uscgold}{#2}}
+  
   
 }
 
