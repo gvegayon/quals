@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[aspectratio=169, 9pt, handout]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -102,7 +102,7 @@ Complex Systems}}
 \setbeamertemplate{note page}[plain]
 \setbeameroption{show notes}
 \usepackage{pgfpages}
-\setbeameroption{show notes on second screen}
+% \setbeameroption{show notes on second screen}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
 % \SweaveOpts{concordance=TRUE}
@@ -171,7 +171,8 @@ particular aspect of life, for example
 
 \note[enumerate]{
 \item Understanding genes means understanding biology
-\item Far more than simply persuing knowledge, understanding gene's
+\item Far more than simply persuing knowledge, this means that we can actually
+use this information towards 
 }
 
 
@@ -179,15 +180,37 @@ particular aspect of life, for example
 \begin{frame}
 \frametitle{The Gene Ontology Project}
 
+\begin{figure}
+\includegraphics[width=.5\linewidth]{go-logo.png}
+\end{figure}
+
 \begin{itemize}[<+->]
 % \item Three domains: Cellular component, molecular function, biological process.
-\item Currently, the Gene Ontology Project has: 44,945 validated terms, $\sim$ 6,400,000
-annotations on $\sim$ 1,150,000 species.
-\item Of all annotations, about $\sim$ 500,000 are on human genes.
-\item Knowledge about gene functions can accelerate bio-medical research.
+\item $\sim$ 44,700 validated terms, $\sim$ 7,300,000 annotations on $\sim$ 4,500 species.
+\item About $\sim$ 500,000 are on human genes.
+\item Roughly half of human genes ($\sim$ 10,000 / 20,000) have some
+form of annotation.
+\item We know something of less than 10\% of known genes (near 1.7M).
 \end{itemize}
 
+\vfill \hfill \textbf{source}: Statistics from \url{pantherdb.org} and \url{geneontology.org}
+
 \end{frame}
+
+\note[itemize]{
+\item The Gene Ontology Project, which is an international scientific effort to develop
+a knowledge base of biology from molecular level up to organism-level systems.
+\begin{quote}
+[\dots] develop an up-to-date, comprehensive, computational model of biological systems, from the molecular level to larger pathways, cellular and organism-level systems.
+\item It has a large collection of genetic annotations from various types of evidence
+including: experimentally, human curated information, and machine inferred.
+\end{quote}
+
+\item A long way since 1999 (20 years), there's still a lot to learn
+\item This information has been crucial for biomedical research (e.g. translating
+GWAS to treatment.)
+\item Let me show you an example of a GO annotaiton
+}
 
 % ------------------------------------------------------------------------------
 \begin{frame}
@@ -238,18 +261,35 @@ these are part of the same evolutionary tree!}
 
 \end{frame}
 
+\begin{frame}
+
+% ------------------------------------------------------------------------------
+\begin{figure}
+\centering
+{\footnotesize
+\def\svgwidth{.7\linewidth}
+\input{fig/Phylogenetic_tree-wiki.pdf_tex}
+}
+\caption{A phylogenetic tree of living things, based on RNA data and proposed by Carl Woese, showing the separation of bacteria, archaea, and eukaryotes (\href{https://en.wikipedia.org/wiki/File:Phylogenetic_tree.svg}{wiki})}
+\end{figure}
+\end{frame}
+
+\note[enumerate]{
+\item Phylogenetic trees show evolutionary relationships between species
+\item Traditionally, we think about these based on say physical features, 
+nowadays we build trees based on genetic distances between species.
+}
+
 % ------------------------------------------------------------------------------
 \begin{frame}[t]
 \frametitle{Phylogenetic Trees: The PANTHER classification system}
 \begin{minipage}{.4\linewidth}
-\pause
+\pause\small
 \begin{itemize}[<+->]
-\item It can be very general: think of the tree of life
-\item Nowadays, thanks to gene-sequencing techniques, we are building trees at the
-gene level.
-\item A single phylogenetic tree can host multiple species
-\item The PANTHER project provides information about 15,524 trees w/ 1.7 million
+\item The PANTHER project (part of GO) provides information about evolutionary structure of 1.7 million
 genes
+\item These genes are grouped in 15,524 phylogenetic trees (families)
+\item A single family can host multiple species (like the lizard and the fish)
 \end{itemize}
 \end{minipage}
 \hfill
@@ -262,7 +302,7 @@ genes
 
 }
 
-\caption[Random annotated phylogenetic tree]{Random annotated phylogenetic tree.}\label{fig:random-tree}
+\caption[Simulated phylogenetic tree and gene annotations]{Simulated phylogenetic tree and gene annotations.}\label{fig:random-tree}
 \end{figure}
 
 
@@ -271,6 +311,25 @@ genes
 \end{minipage}
 \end{frame}
 
+\note[enumerate]{
+\item Here we have an example of a (simulated) phylogenetic tree.
+\item We will see this a couple of times during the presentation
+\item This figure summarizes the information that I will be using
+to infere gene functions:
+\begin{itemize}
+\item The tip nodes (leafs) are modern (known) genes
+\item In general, The color bars next to each gene represent genetic annotations
+(GO terms) in three different states: Has the function (blue), does not have the
+function (red), and no information (white)
+\item Each interior node represent ancestors which are classify as 
+duplication/speciation/or horizontal transfer nodes
+\item This is an hypothesis regarding to what type of event lead
+to a split in the family.
+\item we mostly care about whether these are duplication nodes not
+since we believe that functional gain and loses are more likely
+to happen at this stage.
+\end{itemize}
+}
 
 %
 \frame{
@@ -278,13 +337,41 @@ genes
 \Large
 We can use \vspace{.5cm}
 
-\textcolor{usccardinal}{ {\Huge the evolutionary tree}} \vspace{.5cm}
+\textcolor{usccardinal}{ {\Huge evolutionary trees}} \vspace{.5cm}
 
-to infer presence/absence of \vspace{.5cm}
+to inform a model for predicting \vspace{.5cm}
 
- \textcolor{usccardinal}{{ \Huge gene functions (annotations)}!}
+ \textcolor{usccardinal}{{ \Huge genetic annotations!}}
 }
 
+% ------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Predicting gene functions}
+There various approaches for this, some to highlight
+\begin{itemize}[<+->]
+\item Text analysis like in \cite{Pesaranghader2016}
+\item Protein-protein interaction networks like in \cite{Oliver2000,Piovesan2015}.
+\item Phylogenetic based like SIFTER \cite{Engelhardt2005,Engelhardt2011}.
+\end{itemize}
+
+\vfill \hfill (a nice literature review in \cite{Jiang2016,Yu2018})
+
+\end{frame}
+
+\note[enumerate]{
+\item The last one being the most closely related to what we propose here
+(details to be shown).
+\item In SIFTER, functions are modeled using a transition matrix in
+a Markov continuous model.
+\item The main problem with this is that the computational complexity
+of the model grows horribly (estimating a model with a 100 functions)
+takes literally infinite time.
+\item B/c of this, they truncate some of their modelling and work with
+small sets of up to 5 functions in a single tree (for example).
+\item One key point of most of these models is that these provide a
+point estimate rather than a distribution, and mostly a binary
+estimate of the annotation (yes/no).
+}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=aphylographicalview]
@@ -317,6 +404,23 @@ to infer presence/absence of \vspace{.5cm}
 R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 
 \end{frame}
+
+\note[enumerate]{
+\item In the version of the qual document you saw an implementation of the model
+that did not incorporated information regarding the node types, but that is trivially
+added by just adding a separate gain/loss parameter per type
+\item Another venue we have explored is accounting for publicaction bias, most
+annotations are of the positive type (has function), but few are (no function).
+\item we have failed in the last tests.
+\item The model has been throughly tested. In particular, we did a large scale
+simulation study in which we used all 15,000 trees from panther to simulate
+annotations and then fitted our model using MCMC to check for bias and coverage
+probabilities (which are available in the paper)
+\item The experiment was carriedout using USC's High Performance Computing
+cluster with the R package slurmR (described in the document).
+\item Now, I will show you more recent information in which we take 
+data from PantherDB with GO annotations and fit a large pooled model.
+}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[t]
@@ -363,6 +467,13 @@ R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 \end{minipage}
 
 \end{frame}
+
+\note[enumerate]{
+\item The data used here corresponds to a subset of the trees.
+\item Right now, the main criteria was: (1) must have at least one annotation
+of each type, and (2) must not have large sets of siblings (this due to
+numerical underflow issues, WIP)
+}
 
 % % ------------------------------------------------------------------------------
 % \begin{frame}
@@ -896,22 +1007,29 @@ We performed a simulation study with the following features:
 \caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
 \end{figure}
 
-\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=aphylopkg]
-\frametitle{The \aphylopkg{}}
+\frametitle{The \aphylopkg{} R package}
 
 \begin{itemize}
-\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (implemented in this project).
+\item Simulation and visualization of annotated phylogenetic trees.
+\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (by-product).
+\item Uses metaprogramming (users can specify different formulas).
 \item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
 \item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
-(also implemented as part of this project)
+(also implemented as part of this project):
+\begin{itemize}
+\item Automatic stop via convergence check.
+\item Out-of-the-box parallel chains using parallel computing.
+\item User-defined transition kernel (in our case, Adaptive Kernel).
+\end{itemize}
 \end{itemize}
 
-\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamerreturnbutton{go back}}
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
 \end{frame}
 
 \end{document}
