@@ -102,7 +102,7 @@ Complex Systems}}
 % ------------------------------------------------------------------------------
 % ------------------------------------------------------------------------------
 \setbeamertemplate{note page}[plain]
-\setbeameroption{show notes}
+%\setbeameroption{show notes}
 \usepackage{pgfpages}
 % \setbeameroption{show notes on second screen}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -179,7 +179,7 @@ use this information towards
 
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[label=geneontology]
 \frametitle{The Gene Ontology Project}
 
 \begin{figure}
@@ -188,14 +188,15 @@ use this information towards
 
 \begin{itemize}[<+->]
 % \item Three domains: Cellular component, molecular function, biological process.
-\item $\sim$ 44,700 validated terms, $\sim$ 7,300,000 annotations on $\sim$ 4,500 species.
+\item $\sim$ 44,700 validated terms  \hyperlink{aphylo-goexample}{\beamergotobutton{more}}, $\sim$ 7,300,000 annotations on $\sim$ 4,500 species.
 \item About $\sim$ 500,000 are on human genes.
 \item Roughly half of human genes ($\sim$ 10,000 / 20,000) have some
 form of annotation.
 \item We know something of less than 10\% of known genes (near 1.7M).
 \end{itemize}
 
-\vfill \hfill \textbf{source}: Statistics from \url{pantherdb.org} and \url{geneontology.org}
+\vfill
+\hfill \textbf{source}: Statistics from \url{pantherdb.org} and \url{geneontology.org}
 
 \end{frame}
 
@@ -211,61 +212,13 @@ including: experimentally, human curated information, and machine inferred.
 \item A long way since 1999 (20 years), there's still a lot to learn
 \item This information has been crucial for biomedical research (e.g. translating
 GWAS to treatment.)
-\item Let me show you an example of a GO annotaiton
 }
 
+
+
 % ------------------------------------------------------------------------------
 \begin{frame}
-\frametitle{The Gene Ontology Project}
 
-Example of GO term
-
-\begin{table}
-\footnotesize
-\begin{tabular}{lm{.6\linewidth}}
-\toprule
-\textbf{Accession} & GO:0060047 \\
-\textbf{Name} & heart contraction \\
-\textbf{Ontology} & biological\_process \\
-\textbf{Synonyms} & heart beating, cardiac contraction, hemolymph circulation \\
-\textbf{Alternate} & IDs None \\
-\textbf{Definition} & The multicellular organismal process in which the heart decreases in volume in a 
-characteristic way to propel blood through the body. Source: GOC:dph \\
-\bottomrule
-\end{tabular}
-\caption{Heart Contraction Function. source: \href{http://amigo.geneontology.org/amigo/term/GO:0060047}{amigo.geneontology.org}}
-\end{table}\pause
-
-You know what is interesting about this function?
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[t]
-
-These four species have a gene with that function... \uncover<2->{and two of %
-these are part of the same evolutionary tree!}
-
-\vfill
-
-\def\tmpwidth{.30\linewidth}
-\begin{table}
-\footnotesize
-\begin{tabular}{*{2}{m{\tmpwidth}<\centering}}
-\only<1>{\includegraphics[width=.95\linewidth]{cat.jpg}} %
-  \only<2->{\includegraphics[width=.4\linewidth]{cat.jpg}} \linebreak Felis catus pthr10037 & %
-\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak Oryzias latipes \textbf{pthr11521} \\ %
-\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak Anolis carolinensis \textbf{pthr11521} & %
-\only<1>{\includegraphics[width=.725\linewidth]{horse.jpg}} %
-  \only<2->{\includegraphics[width=.4\linewidth]{horse.jpg}} \linebreak Equus caballus pthr24356
-\end{tabular}
-\end{table}
-
-\end{frame}
-
-\begin{frame}
-
-% ------------------------------------------------------------------------------
 \begin{figure}
 \centering
 {\footnotesize
@@ -347,10 +300,26 @@ to inform a model for predicting \vspace{.5cm}
 }
 
 % ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{Predicting gene functions}
+% \begin{frame}
+% \frametitle{Predicting gene functions}
+% There various approaches for this, some to highlight
+% \begin{itemize}[<+->]
+% \item Text analysis like in \cite{Pesaranghader2016}
+% \item Protein-protein interaction networks like in \cite{Oliver2000,Piovesan2015}.
+% \item Phylogenetic based like SIFTER \cite{Engelhardt2005,Engelhardt2011}.
+% \begin{itemize}
+% \item Parameters to estimate: $2^{2P}$, where $P$ is the number of functions.
+% \end{itemize}
+% \end{itemize}
+% 
+% \vfill \hfill (a nice literature review in \cite{Jiang2016,Yu2018})
+% 
+% \end{frame}
+
+\note[enumerate]{
+
 There various approaches for this, some to highlight
-\begin{itemize}[<+->]
+\begin{itemize}%[<+->]
 \item Text analysis like in \cite{Pesaranghader2016}
 \item Protein-protein interaction networks like in \cite{Oliver2000,Piovesan2015}.
 \item Phylogenetic based like SIFTER \cite{Engelhardt2005,Engelhardt2011}.
@@ -361,9 +330,6 @@ There various approaches for this, some to highlight
 
 \vfill \hfill (a nice literature review in \cite{Jiang2016,Yu2018})
 
-\end{frame}
-
-\note[enumerate]{
 \item The last one being the most closely related to what we propose here
 (details to be shown).
 \item In SIFTER, functions are modeled using a transition matrix in
@@ -389,7 +355,7 @@ estimate of the annotation (yes/no).
 \begin{minipage}{.48\linewidth}
 \begin{itemize}
 	\item<2-> \textcolor{rootnode}{Initial (spontaneous) gain of function}.
-	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on: (a) the state of its' parents ({\bf Markov process}), and (b) the type of node \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}}
+	\item<3-> \textcolor{innernode}{Loss/gain of offspring depends on: (a) the state of their parents ({\bf Markov process}), and (b) the type of node \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}}
 	\item<4-> \textcolor{leafnode}{We control for human error.}
 \end{itemize}
 \end{minipage}
@@ -437,7 +403,8 @@ data from PantherDB with GO annotations and fit a large pooled model.
 \scalebox{0.7}{
 \begin{tabular}{ll*{2}{m{0.3\linewidth}<\centering}}
   \toprule
- & & (1) & (2)  \\ 
+ & & \multicolumn{2}{c}{Prior} \\
+ & & Uniform & Beta  \\ 
   \midrule
   \multicolumn{2}{l}{Mislab. prob.} \\
   & $\psi_0$ & 0.23 & 0.25 \\ 
@@ -450,10 +417,10 @@ data from PantherDB with GO annotations and fit a large pooled model.
   & $\mu_{s1}$ & 0.01 & 0.02 \\ 
   \multicolumn{2}{l}{Root node} \\
   & $\pi$ & 0.81 & 0.45  \\ 
-\midrule   
-  & Prior & Uniform & Beta  \\ 
-  & AUC (mean) & 0.69 & 0.67 \\
-  & AUC (median) & 0.81 & 0.75 \\
+\midrule 
+\multicolumn{2}{l}{Leave-one-out AUC} \\
+  & Mean & 0.69 & 0.67 \\
+  & Median & 0.81 & 0.75 \\
    \bottomrule
 \end{tabular}
 }
@@ -464,7 +431,7 @@ data from PantherDB with GO annotations and fit a large pooled model.
 \begin{minipage}{.59\linewidth}
 \begin{itemize}[<+->]
 \item 141 pooled functions (trees) with 7,388 genes with 0/1 annotations.
-\item Parameter estiamtes are actually probabilities.
+\item Parameter estimates are actually probabilities.
 \item Data driven results (uninformative prior).
 \item \textcolor{usccardinal}{Biologically meaningful results.}
 \item Took about 5 minutes each.
@@ -635,6 +602,62 @@ govern social networks
 \vfill\hfill \hyperlink{ergmterms}{\beamergotobutton{more on terms}}
 \end{frame}
 
+% -----------------------------------------------------------------------------
+\begin{frame}[label=ergm-toyexample]
+
+\begin{columns}[c]
+
+\begin{column}[c]{.4\linewidth}
+
+In this network\linebreak
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.9\linewidth]{figure/simple-model-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\pause
+
+We see 4 \textbf{edges}, 1 \textbf{transitive triad} and \textbf{no mutual ties}.
+
+\end{column}
+
+\pause
+
+\begin{column}[c]{.4\linewidth}
+
+The probability function of this model would be
+
+\footnotesize
+
+\begin{equation*}
+\Prcond{\Graph = \graph}{\theta} = \frac{\exp{4\theta_{edges} + \theta_{ttriads} \textcolor{lightgray}{+ 0\theta_{mutual}}}}{%
+\sum_{\graph'\in\GRAPH} \exp{\transpose{\theta} \sufstats{\graph'}}}
+\end{equation*}
+
+\normalsize
+
+\noindent with $\theta = \transpose{[\theta_{edges}\quad \theta_{ttriads} \quad \theta_{mutual}]}$
+
+\end{column}
+
+\end{columns}
+
+
+
+\pause
+
+\vspace{1cm}
+
+This model has \textbf{MLE parameter estimates} of -0.20 (low density), 0.28 (high chance of ttriads), and -Inf (low chance of mutuality) for the parameters \texttt{edges}, \texttt{ttriads}, and \texttt{mutual} respectively.
+
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=art]
@@ -832,9 +855,6 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \end{itemize}
 \end{beamercolorbox}
 
-
-
-
 \end{frame}
 
 
@@ -860,26 +880,65 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \printbibliography
 \end{frame}
 
+
 % ------------------------------------------------------------------------------
-\section{Things that are very interesting but I most probably won't have any time to discuss with the attendees}
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
 
-\begin{frame}
-Here are some by-products of my research here at USC
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylo-goexample]
+\frametitle{The Gene Ontology Project}
 
-\begin{itemize}
-\item The slurmR R package
-\item The pruner C++ library
-\item The fmcmc R package
-\end{itemize}
+Example of GO term
+
+\begin{table}
+\footnotesize
+\begin{tabular}{lm{.6\linewidth}}
+\toprule
+\textbf{Accession} & GO:0060047 \\
+\textbf{Name} & heart contraction \\
+\textbf{Ontology} & biological\_process \\
+\textbf{Synonyms} & heart beating, cardiac contraction, hemolymph circulation \\
+\textbf{Alternate} & IDs None \\
+\textbf{Definition} & The multicellular organismal process in which the heart decreases in volume in a 
+characteristic way to propel blood through the body. Source: GOC:dph \\
+\bottomrule
+\end{tabular}
+\caption{Heart Contraction Function. source: \href{http://amigo.geneontology.org/amigo/term/GO:0060047}{amigo.geneontology.org}}
+\end{table}%\pause
+
+You know what is interesting about this function?
+
+\vfill \hfill \hyperlink{geneontology}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
 
-% ------------------------------------------------------------------------------
-% ------------------------------------------------------------------------------
-% ------------------------------------------------------------------------------
-% ------------------------------------------------------------------------------
-% ------------------------------------------------------------------------------
+These four species have a gene with that function... \uncover<2->{and two of %
+these are part of the same evolutionary tree!}
+
+\vfill
+
+\def\tmpwidth{.30\linewidth}
+\begin{table}
+\footnotesize
+\begin{tabular}{*{2}{m{\tmpwidth}<\centering}}
+\only<1>{\includegraphics[width=.95\linewidth]{cat.jpg}} %
+  \only<2->{\includegraphics[width=.4\linewidth]{cat.jpg}} \linebreak Felis catus pthr10037 & %
+\includegraphics[width=1\linewidth]{Oryzias_latipes.jpg} \linebreak Oryzias latipes \textbf{pthr11521} \\ %
+\includegraphics[width=1\linewidth]{Anole_Lizard.jpg} \linebreak Anolis carolinensis \textbf{pthr11521} & %
+\only<1>{\includegraphics[width=.725\linewidth]{horse.jpg}} %
+  \only<2->{\includegraphics[width=.4\linewidth]{horse.jpg}} \linebreak Equus caballus pthr24356
+\end{tabular}
+\end{table}
+
+\vfill \hfill \hyperlink{geneontology}{\beamerreturnbutton{go back}}
+
+\end{frame}
 
 \begin{frame}[label=ergmterms]
 
