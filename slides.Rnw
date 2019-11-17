@@ -138,11 +138,12 @@ use this information towards
 
 \begin{itemize}[<+->]
 % \item Three domains: Cellular component, molecular function, biological process.
-\item $\sim$ 44,700 validated terms  \hyperlink{aphylo-goexample}{\beamergotobutton{more}}, $\sim$ 7,300,000 annotations on $\sim$ 4,500 species.
+\item The GO project has $\sim$ 44,700 validated terms  \hyperlink{aphylo-goexample}{\beamergotobutton{more}}, $\sim$ 7.3M annotations on $\sim$ 4,500 species.
 \item About $\sim$ 500,000 are on human genes.
 \item Roughly half of human genes ($\sim$ 10,000 / 20,000) have some
 form of annotation.
 \item We know something of less than 10\% of known genes (near 1.7M).
+\item An important effort of the GO has to do with phylogenetics...
 \end{itemize}
 
 \vfill
@@ -194,12 +195,12 @@ nowadays we build trees based on genetic distances between species.
 \item The PANTHER project (part of GO) provides information about evolutionary structure of 1.7 million
 genes
 \item These genes are grouped in 15,524 phylogenetic trees (families)
-\item A single family can host multiple species (like the lizard and the fish)
+\item A single family can host multiple species
 \end{itemize}
 \end{minipage}
 \hfill
 \begin{minipage}{.5\linewidth}
-\uncover<6->{
+\uncover<5->{
 <<random-tree, echo=FALSE, messages=FALSE, out.width=".85\\linewidth", fig.align='center', fig.cap="Simulated phylogenetic tree and gene annotations.">>=
 oldpar <- par(mai=rep(0, 4))
 set.seed(115)
@@ -247,22 +248,7 @@ to inform a model for predicting \vspace{.5cm}
  \textcolor{usccardinal}{{ \Huge genetic annotations!}}
 }
 
-% ------------------------------------------------------------------------------
-% \begin{frame}
-% \frametitle{Predicting gene functions}
-% There various approaches for this, some to highlight
-% \begin{itemize}[<+->]
-% \item Text analysis like in \cite{Pesaranghader2016}
-% \item Protein-protein interaction networks like in \cite{Oliver2000,Piovesan2015}.
-% \item Phylogenetic based like SIFTER \cite{Engelhardt2005,Engelhardt2011}.
-% \begin{itemize}
-% \item Parameters to estimate: $2^{2P}$, where $P$ is the number of functions.
-% \end{itemize}
-% \end{itemize}
-% 
-% \vfill \hfill (a nice literature review in \cite{Jiang2016,Yu2018})
-% 
-% \end{frame}
+
 
 \note[enumerate]{
 
@@ -321,6 +307,9 @@ estimate of the annotation (yes/no).
 
 \uncover<5->{We implemented the model using Felsenstein's' pruning algorithm (linear complexity) in the
 R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
+
+\vfill\hfill \hyperlink{other-models}{\beamergotobutton{other models}}
+\hyperlink{aphyloalgorithmicview}{\beamergotobutton{other view}}
 
 \end{frame}
 
@@ -442,76 +431,24 @@ of size 300, we take about 5 minutes.
 \item Meaningful biological results.
 \item Preliminary accuracy results comparable to state-of-the-art phylo-based models.
 \end{itemize}
-\end{beamercolorbox}
+\end{beamercolorbox}\pause
 
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[t]
-\frametitle{Paper 1: On the prediction of gene functions using phylogenetic trees}
-
-{\bf \large Next steps}
+{\bf \large Challenges}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
+Right now the model has two big assumptions\pause{}
 \begin{itemize}
-\item Make the model hierarchical when pooling trees\pause
-\begin{itemize}
-\item Different mutation rates per class of tree.
-\item It can also account for mutation rate as a function of type of function
-\item Can be complicated to fit (how many classes?)
-\end{itemize}\pause
-\item Use a framework similar to Exponential Random Graph Models:\pause
-\begin{itemize}
-\item A generalization of the model.
-\item Extends to account for joint dist of functions+siblings
-\item Can incorporate aditional information such as branch lenghts.
-\item Yet computationally more compact compared to SIFTER (iso-statistics).
+\item Offspring are conditional independent on their parent and\pause{}
+\item Functions evolve independently. \hyperlink{duplicationvsspeciation}{\beamergotobutton{more}}
 \end{itemize}
-\end{itemize}
-\pause
-$$
-\Prcond{\Ann=\{\ann{n1}, \ann{n2},\dots\}}{\ann{\parent{n1, \dots}}} = \frac{\exp{\mu^{T} s(\mathbf{x}|\ann{\parent{\cdot}})}}{\sum_{\mathbf{x}'}\exp{\mu^{T} s(\mathbf{x}'|\ann{\parent{\cdot}})}}
-$$
-
 \end{beamercolorbox}
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}[t]
-\frametitle{Paper 1: On the prediction of gene functions using phylogenetic trees}
 
-\textbf{Example 1}\pause
-\begin{itemize}[<+->]
-\item 2 siblings 2 function involves modelling the following array:
-
-$$
-\left[\begin{array}{c}x_{p1}\\x_{p2}\end{array}\right] \to
-\left(%
-\left[\begin{array}{c} x_{i1} \\ x_{i2}\end{array}\right],%
-\left[\begin{array}{c} x_{j1} \\ x_{j2}\end{array}\right]
-\right)
-$$
-\item Here we have $2^2 = 4$ possible states.
-\end{itemize}
-
-\only<4->{\textbf{Example 2}}
-
-\begin{itemize}[<+->]
-\item If we treat siblings independent, but work with 5 functions, SIFTER needs
-to estimate $2^{10} = 1,024$ parameters.
-
-\item Our approach can reduce this number to, for example, 11 terms:
-\begin{itemize}
-\item $5\times 4 / 2 = 10$ statistics for pairwise correlation.
-\item One statistic accounting for longest branch.
-\end{itemize}
-\end{itemize}
-
-\end{frame}
 
 % ------------------------------------------------------------------------------
 \section{Paper 2: Exponential Random Graph Models for Small Networks}
-\frame{\frametitle{Contents}\tableofcontents}
+% \frame{\frametitle{Contents}\tableofcontents}
 
 \begin{frame}[t]
 \usebeamertemplate{section intro}{}{}
@@ -796,16 +733,95 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 \vfill\pause
 
-{\bf \large Next steps}
+{\bf \large Challenges}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}
-\item Revisit measurement of goodness-of-fit.
+\item Computationally, we can do better in terms of speed/memory.\pause
+\item Have a good way of assessing goodness-of-fit.\pause
 \item Explore extending this method for (very) large networks.
 \end{itemize}
 \end{beamercolorbox}
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------
+\section{Future Research}
+
+\begin{frame}[c]
+\usebeamertemplate{section intro}{}{}
+\textcolor{uscgold}{
+\Large {\bf Future Research}
+}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Future Research: phylogenetic models}
+
+\begin{itemize}
+\item Make the model hierarchical when pooling trees\pause
+\begin{itemize}
+\item Different mutation rates per class of tree.
+\item It can also account for mutation rate as a function of type of function
+\item Can be complicated to fit (how many classes?)
+\end{itemize}\pause
+\item Use a framework similar to Exponential Random Graph Models:\pause
+\begin{itemize}
+\item A generalization of the model.
+\item Extends to account for joint dist of functions+siblings
+\item Can incorporate aditional information such as branch lenghts.
+\item Yet computationally more compact compared to SIFTER (iso-statistics).
+\end{itemize}
+\end{itemize}
+\pause
+$$
+\Prcond{\Ann=\{\ann{n1}, \ann{n2},\dots\}}{\ann{\parent{n1, \dots}}} = \frac{\exp{\mu^{T} s(\mathbf{x}|\ann{\parent{\cdot}})}}{\sum_{\mathbf{x}'}\exp{\mu^{T} s(\mathbf{x}'|\ann{\parent{\cdot}})}}
+$$
+
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Future Research: phylogenetic models}
+
+\textbf{Example 1}\pause
+\begin{itemize}[<+->]
+\item 2 siblings 2 function involves modelling the following array:
+
+$$
+\left[\begin{array}{c}x_{p1}\\x_{p2}\end{array}\right] \to
+\left(%
+\left[\begin{array}{c} x_{i1} \\ x_{i2}\end{array}\right],%
+\left[\begin{array}{c} x_{j1} \\ x_{j2}\end{array}\right]
+\right)
+$$
+\item Here we have $2^2 = 4$ possible states.
+\end{itemize}
+
+\only<4->{\textbf{Example 2}}
+
+\begin{itemize}[<+->]
+\item If we treat siblings independent, but work with 5 functions, SIFTER needs
+to estimate $2^{10} = 1,024$ parameters.
+
+\item Our approach can reduce this number to, for example, 11 terms:
+\begin{itemize}
+\item $5\times 4 / 2 = 10$ statistics for pairwise correlation.
+\item One statistic accounting for longest branch.
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Future Research: ERGMitos}
+
+\end{frame}
 
 % % ------------------------------------------------------------------------------
 % \section{Future directions}
@@ -889,6 +905,115 @@ these are part of the same evolutionary tree!}
 
 \end{frame}
 
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=other-models]
+\frametitle{Predicting gene functions}
+There various approaches for this, some to highlight
+\begin{itemize}%[<+->]
+\item Text analysis like in \cite{Pesaranghader2016}
+\item Protein-protein interaction networks like in \cite{Oliver2000,Piovesan2015}.
+\item Phylogenetic based like SIFTER \cite{Engelhardt2005,Engelhardt2011}.
+\begin{itemize}
+\item Parameters to estimate: $2^{2P}$, where $P$ is the number of functions.
+\end{itemize}
+\end{itemize}
+
+\vfill \hfill (a nice literature review in \cite{Jiang2016,Yu2018})
+\hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphyloalgorithmicview]
+\frametitle{An evolutionary model of gene functions (algorithmic view)}
+
+\scalebox{.7}{
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{A phylogenetic tree, $\{\pi, \mu, \psi\}$(Model probabilities)}
+\KwResult{An annotated tree}
+%\pause
+\For{$n \in PostOrder(N)$}{
+  $\mbox{\bf\color{usccardinal}Nodes gain/loss function depending on their parent}$\;%\pause
+  \Switch{class of $n$}{
+    \uCase{root node}{
+      Gain function with probability $\pi$\;
+    }%\pause
+    \uCase{interior node} {%\pause
+      \lIf{Parent has the function}{Keep it with prob. $(1-\mu_1)$}%\pause
+      \lElse{Gain it with prob. $\mu_0$}%\pause
+    }
+  }%\pause
+  $\mbox{\bf\color{usccardinal}Finally, we allow for mislabeling}$\;%\pause
+  \uIf{$n$ is leaf}{%\pause
+    \lIf{has the function}{Mislabel with prob. $\psi_1$}%\pause
+    \lElse{Mislabel with prob. $\psi_0$}%\pause
+  }
+}
+\end{algorithm}
+}
+
+\vfill\hfill \hyperlink{aphylographicalview}{\beamergotobutton{go back}}
+
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label = duplicationvsspeciation]
+\frametitle{Speciation}
+\begin{figure}
+\centering
+\def\svgwidth{.8\linewidth}
+\tiny
+% Source 
+\input{fig/Drosophila_speciation_experiment.pdf_tex}
+\caption{\cite{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
+\end{figure}
+
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Duplication}
+\begin{figure}
+\centering
+\def\svgwidth{.6\linewidth}
+\tiny
+% Source : https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg
+\input{fig/Evolution_fate_duplicate_genes_-_vector.pdf_tex}
+\caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
+\end{figure}
+
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylopkg]
+\frametitle{The \aphylopkg{} R package}
+
+\begin{itemize}
+\item Simulation and visualization of annotated phylogenetic trees.
+\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (by-product).
+\item Uses metaprogramming (users can specify different formulas).
+\item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
+\item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
+(also implemented as part of this project):
+\begin{itemize}
+\item Automatic stop via convergence check.
+\item Out-of-the-box parallel chains using parallel computing.
+\item User-defined transition kernel (in our case, Adaptive Kernel).
+\end{itemize}
+\end{itemize}
+
+\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
+\end{frame}
+
+% ------------------------------------------------------------------------------
 \begin{frame}[label=ergmterms]
 
 {\bf\color{suffstat} Sufficient statistics} have various forms
@@ -994,6 +1119,7 @@ We performed a simulation study with the following features:
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Paper 2 Simulation Studies: Empirical Bias}
 
@@ -1004,94 +1130,6 @@ We performed a simulation study with the following features:
 
 \vfill\hfill \hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
 
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[label=aphyloalgorithmicview]
-\frametitle{An evolutionary model of gene functions (algorithmic view)}
-
-\scalebox{.7}{
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwData{A phylogenetic tree, $\{\pi, \mu, \psi\}$(Model probabilities)}
-\KwResult{An annotated tree}
-%\pause
-\For{$n \in PostOrder(N)$}{
-  $\mbox{\bf\color{usccardinal}Nodes gain/loss function depending on their parent}$\;%\pause
-  \Switch{class of $n$}{
-    \uCase{root node}{
-      Gain function with probability $\pi$\;
-    }%\pause
-    \uCase{interior node} {%\pause
-      \lIf{Parent has the function}{Keep it with prob. $(1-\mu_1)$}%\pause
-      \lElse{Gain it with prob. $\mu_0$}%\pause
-    }
-  }%\pause
-  $\mbox{\bf\color{usccardinal}Finally, we allow for mislabeling}$\;%\pause
-  \uIf{$n$ is leaf}{%\pause
-    \lIf{has the function}{Mislabel with prob. $\psi_1$}%\pause
-    \lElse{Mislabel with prob. $\psi_0$}%\pause
-  }
-}
-\end{algorithm}
-}
-
-\vfill\hfill \hyperlink{aphylographicalviewcont}{\beamergotobutton{go back}}
-
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[label = duplicationvsspeciation]
-\frametitle{Speciation}
-\begin{figure}
-\centering
-\def\svgwidth{.8\linewidth}
-\tiny
-% Source 
-\input{fig/Drosophila_speciation_experiment.pdf_tex}
-\caption{\cite{Dodd1989}: After one year of isolation, flies showed a significant level or assortativity in mating (\href{https://commons.wikimedia.org/wiki/File:Drosophila_speciation_experiment.svg}{wikimedia})}
-\end{figure}
-
-\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
-
-\end{frame}
-
-\begin{frame}
-\frametitle{Duplication}
-\begin{figure}
-\centering
-\def\svgwidth{.6\linewidth}
-\tiny
-% Source : https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg
-\input{fig/Evolution_fate_duplicate_genes_-_vector.pdf_tex}
-\caption{A key part of molecular innovation, gene duplication provides opportunity for new functions to emerge (\href{https://en.wikipedia.org/wiki/File:Evolution_fate_duplicate_genes_-_vector.svg}{wikimedia})}
-\end{figure}
-
-\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[label=aphylopkg]
-\frametitle{The \aphylopkg{} R package}
-
-\begin{itemize}
-\item Simulation and visualization of annotated phylogenetic trees.
-\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (by-product).
-\item Uses metaprogramming (users can specify different formulas).
-\item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
-\item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
-(also implemented as part of this project):
-\begin{itemize}
-\item Automatic stop via convergence check.
-\item Out-of-the-box parallel chains using parallel computing.
-\item User-defined transition kernel (in our case, Adaptive Kernel).
-\end{itemize}
-\end{itemize}
-
-\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
 \end{frame}
 
 \end{document}
