@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt]{beamer}
+\documentclass[aspectratio=169, 9pt, draft]{beamer}
 
 % \transdissolve[duration=0.2] % Only works with Adobe Acrobat
 
@@ -842,20 +842,33 @@ to estimate $2^{10} = 1,024$ parameters.
 \begin{frame}[t]
 \frametitle{Concluding Remarks}
 
-\large {\bf Accomplished so far}
-\begin{itemize}
-\item A parsimonious, computational scalable model of gene functional evolution
-\item An extension to a well studied family of statistical models for social networks
+% \large {\bf Accomplished so far}
+\begin{itemize}[<+->]
+\item Paper 1: Phylogenetic models of gene functional evolution
+  \begin{itemize}
+  \item A parsimonious, computational scalable model.
+  \item Performance comparable to state-of-the-art models.
+  \item \textbf{Next steps:} Breaking assumptions and use what I've learned from ERGMs.
+  \end{itemize}
+\item Paper 2: ERGMs for small networks
+  \begin{itemize}
+  \item An extension to a well studied models for social networks.
+  \item Opens the door to a large set of methodological innovations.
+  \item \textbf{Next steps:} GOF or extensions to large networks?
+  \end{itemize}
 \end{itemize}
 
-\large {\bf Accomplished so far}
+\vfill
+\footnotesize 
+\uncover<9->{{\bf Accomplishments during the development of this work}}
+\uncover<9->{
+\begin{beamercolorbox}{conclusions}
 \begin{itemize}
-\item Two new statistical models for complex (no-IID) systems.
-\item 5 journal publications: 2 on the (JOSS, Stata Journal, Journal of Behavioral)
-\item x packages/libraries built (2 on CRAN now) ergmito, fmcmc, slurmR, aphylo, polygons, pruner, netplot, phyloXML,  
-\item a
+\item<10->6 journal publications (Journal of Open Source Software, Stata Journal, Journal of health and social behavior, Translational behavioral medicine, Social Science \& Medicine)
+\item<11->11 packages/libraries built (ergmito, similR, gnet, fmcmc, slurmR, aphylo, polygons, pruner, netplot, rphyloxml, jsPhyloSVG)
 \end{itemize}
-
+\end{beamercolorbox}
+}
 \end{frame}
 
 % % ------------------------------------------------------------------------------
