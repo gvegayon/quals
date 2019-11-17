@@ -736,20 +736,20 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 \begin{table}[ht]
 	\centering
-	\begin{tabular}{ccccc}
-		\toprule & & \multicolumn{2}{c}{P(Type I error)} \\ \cmidrule(r){3-4}
-		Sample size & N. Simulations & \makecell{MC-MLE \\ (\ergmpkg{})} & \makecell{MLE \\ (\ergmitopkg{})} & $\chi^2$ \\ 
+	\begin{tabular}{cccc}
+		\toprule & \multicolumn{2}{c}{P(Type I error)} \\ \cmidrule(r){2-3}
+		Sample size  & \makecell{MC-MLE \\ (\ergmpkg{})} & \makecell{MLE \\ (\ergmitopkg{})} & $\chi^2$ \\ 
 		\midrule
-		5 & 2,189 & 0.084 & 0.057 & 11.71 *** \\ 
-		10 & 2,330 & 0.070 & 0.045 & 12.46 *** \\ 
-		15 & 2,395 & 0.084 & 0.066 & 5.55 * \\ 
-		20 & 2,430 & 0.074 & 0.060 & 3.58  \\ 
-		30 & 2,460 & 0.057 & 0.052 & 0.67  \\ 
-		50 & 2,495 & 0.046 & 0.044 & 0.17  \\ 
-		100 & 2,499 & 0.048 & 0.048 & 0.00  \\ 
+		5 & 0.084 & 0.057 & 11.71 *** \\ 
+		10 & 0.070 & 0.045 & 12.46 *** \\ 
+		15 & 0.084 & 0.066 & 5.55 * \\ 
+		20 & 0.074 & 0.060 & 3.58  \\ 
+		30 & 0.057 & 0.052 & 0.67  \\ 
+		50 & 0.046 & 0.044 & 0.17  \\ 
+		100 & 0.048 & 0.048 & 0.00  \\ 
 		\bottomrule
 	\end{tabular}
-	\caption{\label{tab:typeI}Empirical Type I error rates. The $\chi^2$ statistic is from a 2-sample test for equality of proportions, and the significance levels are given by *** $p < 0.001$, ** $p < 0.01$, and * $p < 0.05$. The lack of fitted samples in some levels is due to failure of the estimation method.} 
+	\caption{\label{tab:typeI}Empirical Type I error rates. The $\chi^2$ statistic is from a 2-sample test for equality of proportions, and the significance levels are given by *** $p < 0.001$, ** $p < 0.01$, and * $p < 0.05$.} 
 \end{table}
 
 \end{frame}
@@ -806,6 +806,27 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \textcolor{uscgold}{
 \Large {\bf Future Research}
 }
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Future Research: ERGMitos}
+
+{\bf Goodness-of-fit}\pause
+\begin{itemize}
+\item Is something that will need to be addressed at some point.\pause
+\item The problem is not easy as we need to deal a discrete distribution.\pause
+\item Two key questions: What sufficient statistic to look at? what test?
+\end{itemize}
+
+\pause {\bf ERGMs for large networks} \pause
+\begin{itemize}
+\item There is still no standard way to estimate ERGMs for large networks.\pause
+\item Most atempts are still depending on simulation methods.\pause
+\item We could use the Snowball Sampling framework together with ERGMitos.\pause{}
+(... I would call this ERGMote)
+\end{itemize}
+
 \end{frame}
 
 % ------------------------------------------------------------------------------
@@ -868,18 +889,27 @@ to estimate $2^{10} = 1,024$ parameters.
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
+% % ------------------------------------------------------------------------------
 \begin{frame}[t]
-\frametitle{Future Research: ERGMitos}
+\frametitle{Concluding Remarks}
+
+\large {\bf Accomplished so far}
+\begin{itemize}
+\item A parsimonious, computational scalable model of gene functional evolution
+\item An extension to a well studied family of statistical models for social networks
+\end{itemize}
+
+\large {\bf Accomplished so far}
+\begin{itemize}
+\item Two new statistical models for complex (no-IID) systems.
+\item 5 journal publications: 2 on the (JOSS, Stata Journal, Journal of Behavioral)
+\item x packages/libraries built (2 on CRAN now) ergmito, fmcmc, slurmR, aphylo, polygons, pruner, netplot, phyloXML,  
+\item a
+\end{itemize}
 
 \end{frame}
 
 % % ------------------------------------------------------------------------------
-% \section{Future directions}
-% \begin{frame}
-% 
-% \end{frame}
-
 \begin{frame}
 \maketitle
 \begin{center}
