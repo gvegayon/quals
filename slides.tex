@@ -1,4 +1,4 @@
-\documentclass[aspectratio=169, 9pt, draft]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
+\documentclass[aspectratio=169, 9pt]{beamer}\usepackage[]{graphicx}\usepackage[]{color}
 % maxwidth is the original width if it is less than linewidth
 % otherwise use linewidth (to make sure the graphics do not exceed the margin)
 \makeatletter
@@ -607,15 +607,15 @@ Medium-large (dozens to a couple of thousand vertices) networks
 \item Maximum Pseudo Likelihood (MPLE)
 \end{itemize}\pause
 
-large-huge networks (up to the millions of vertices)
+large-huge networks (up to millions of vertices)
 
 \begin{itemize}
-\item Semi-parametric bootstrap
+\item Parametric bootstrap
 \item Conditional joint estimation (like snowball sampling, a.k.a. divide and conquer)
 \item Equilibrium Expectation Algorithm (millions of vertices)
 \end{itemize}\pause
 
-What about small networks?
+All of these methods are approximations!
 
 \end{frame}
 
@@ -642,19 +642,19 @@ We see small networks everywhere\pause
 }
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}
-\frametitle{ERGMs for Small Networks}
-
-From the methodological point of view, current methods are great, but:\pause
-
-\begin{itemize}
-\item Possible accuracy issues (error rates)\pause
-\item Prone to degeneracy problems (sampling and existence of MLE)\pause
-\item It is not MLE...
-\end{itemize}
-
-\end{frame}
+% % ------------------------------------------------------------------------------
+% \begin{frame}
+% \frametitle{ERGMs for Small Networks}
+% 
+% From the methodological point of view, current methods are great, but:\pause
+% 
+% \begin{itemize}
+% \item Possible accuracy issues (error rates)\pause
+% \item Prone to degeneracy problems (sampling and existence of MLE)\pause
+% \item It is not MLE...
+% \end{itemize}
+% 
+% \end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=ergmito]
@@ -682,6 +682,28 @@ unique configurations.
 \item We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
 \end{itemize}
 
+
+\end{frame}
+
+
+%-
+
+\begin{frame}
+Sidetrack...\vspace{.5cm}
+
+\begin{minipage}[c]{1\linewidth}
+\large \textbf{ito, ita}: From the latin -\textit{\=ittus}. suffix in Spanish used to denote small or affection. e.g.:
+
+\hspace{.5cm} \textit{¡Qué lindo ese perr\textcolor{USCCardinal}{\textbf{ito}}!} / \textit{What a beautiful little dog!}
+
+\hspace{.5cm} \textit{¿Me darías una tac\textcolor{USCCardinal}{\textbf{ita}} de azúcar?} / \textit{Would you give me a small cup of sugar?}
+\normalsize
+\end{minipage}\pause
+
+% Screen shot of ERGMito tweet.
+\vfill
+
+\alert{Special thanks to George Barnett who proposed the name during the 2018 NASN!}
 
 \end{frame}
 
@@ -810,42 +832,20 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 
 % ------------------------------------------------------------------------------
 \begin{frame}[t]
-\frametitle{Future Research: ERGMitos}
-
-{\bf Goodness-of-fit}\pause
-\begin{itemize}
-\item Is something that will need to be addressed at some point.\pause
-\item The problem is not easy as we need to deal a discrete distribution.\pause
-\item Two key questions: What sufficient statistic to look at? what test?
-\end{itemize}
-
-\pause {\bf ERGMs for large networks} \pause
-\begin{itemize}
-\item There is still no standard way to estimate ERGMs for large networks.\pause
-\item Most atempts are still depending on simulation methods.\pause
-\item We could use the Snowball Sampling framework together with ERGMitos.\pause{}
-(... I would call this ERGMote)
-\end{itemize}
-
-\end{frame}
-
-% ------------------------------------------------------------------------------
-\begin{frame}[t]
 \frametitle{Future Research: phylogenetic models}
 
 \begin{itemize}
 \item Make the model hierarchical when pooling trees\pause
 \begin{itemize}
-\item Different mutation rates per class of tree.
-\item It can also account for mutation rate as a function of type of function
+\item Different mutation rates per class of tree/function
 \item Can be complicated to fit (how many classes?)
 \end{itemize}\pause
 \item Use a framework similar to Exponential Random Graph Models:\pause
 \begin{itemize}
-\item A generalization of the model.
+\item A generalization of the model
 \item Extends to account for joint dist of functions+siblings
-\item Can incorporate aditional information such as branch lenghts.
-\item Yet computationally more compact compared to SIFTER (iso-statistics).
+\item Can incorporate aditional information such as branch lenghts
+\item Yet computationally more compact compared to SIFTER (iso-statistics)
 \end{itemize}
 \end{itemize}
 \pause
@@ -889,6 +889,47 @@ to estimate $2^{10} = 1,024$ parameters.
 
 \end{frame}
 
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+
+\begin{table}
+\begin{tabular}{llcc}
+\toprule
+& & \multicolumn{2}{c}{\bf Transitions to} \\
+ & & Case 1 & Case 2 \\ \cmidrule(r){3-4}
+\multicolumn{2}{r}{\textbf{Parent} $\left[\begin{array}{c}0 \\ 1 \\ 0\end{array}\right]$} & 
+$\left[\begin{array}{cc}0 & 0 \\ 1 & 0 \\ 0 & 1\end{array}\right]$ & 
+$\left[\begin{array}{cc}1 & 0 \\ 0 & 0 \\ 1 & 0\end{array}\right]$ \\ \midrule 
+\multicolumn{3}{l}{\textbf{Sufficient statistics}} \\ 
+& \# Gains & 1 & 2 \\
+& \# only one offspring changes & 1 & 0 \\
+& \# Swaps (0$\to$1, 1$\to$0) & 2 & 4 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[t]
+\frametitle{Future Research: ERGMitos}
+
+{\bf Goodness-of-fit}\pause
+\begin{itemize}
+\item Is something that will need to be addressed at some point.\pause
+\item The problem is not easy as we need to deal a discrete distribution.\pause
+\item Two key questions: What sufficient statistic to look at? what test?
+\end{itemize}
+
+\pause {\bf ERGMs for large networks} \pause
+\begin{itemize}
+\item There is still no standard way to estimate ERGMs for large networks.\pause
+\item Most atempts are still depending on simulation methods.\pause
+\item We could use the Snowball Sampling framework together with ERGMitos.\pause{}
+(... I would call this ERGMote)
+\end{itemize}
+
+\end{frame}
+
 % % ------------------------------------------------------------------------------
 \begin{frame}[t]
 \frametitle{Concluding Remarks}
@@ -897,13 +938,15 @@ to estimate $2^{10} = 1,024$ parameters.
 \begin{itemize}[<+->]
 \item Paper 1: Phylogenetic models of gene functional evolution
   \begin{itemize}
-  \item A parsimonious, computational scalable model.
-  \item Performance comparable to state-of-the-art models.
-  \item \textbf{Next steps:} Breaking assumptions and use what I've learned from ERGMs.
+  \item Parsimonious and biologically meaningful.
+  \item Computationally scalable.
+  \item Performance comparable to state-of-the-art alternatives.
+  \item \textbf{Next steps:} Use ERGMs framework to break assumptions.
   \end{itemize}
 \item Paper 2: ERGMs for small networks
   \begin{itemize}
   \item An extension to a well studied models for social networks.
+  \item Implements 
   \item Opens the door to a large set of methodological innovations.
   \item \textbf{Next steps:} GOF or extensions to large networks?
   \end{itemize}
@@ -911,12 +954,12 @@ to estimate $2^{10} = 1,024$ parameters.
 
 \vfill
 \footnotesize 
-\uncover<9->{{\bf Accomplishments during the development of this work}}
-\uncover<9->{
+\uncover<11->{{\bf Accomplishments during the development of this work}}
+\uncover<11->{
 \begin{beamercolorbox}{conclusions}
 \begin{itemize}
-\item<10->6 journal publications (Journal of Open Source Software, Stata Journal, Journal of health and social behavior, Translational behavioral medicine, Social Science \& Medicine)
-\item<11->11 packages/libraries built (ergmito, similR, gnet, fmcmc, slurmR, aphylo, polygons, pruner, netplot, rphyloxml, jsPhyloSVG)
+\item<12->6 journal publications (Journal of Open Source Software, Stata Journal, Journal of health and social behavior, Translational behavioral medicine, Social Science \& Medicine)
+\item<13->11 packages/libraries built (ergmito, similR, gnet, fmcmc, slurmR, aphylo, polygons, pruner, netplot, rphyloxml, jsPhyloSVG)
 \end{itemize}
 \end{beamercolorbox}
 }
