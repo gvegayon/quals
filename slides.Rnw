@@ -127,7 +127,7 @@ particular aspect of life, for example
 
 \note[enumerate]{
 \item Understanding genes means understanding biology
-\item Far more than simply persuing knowledge, this means that we can actually
+\item Far more than simply pursuing knowledge, this means that we can actually
 use this information towards 
 }
 
@@ -165,7 +165,7 @@ including: experimentally, human curated information, and machine inferred.
 \end{quote}
 
 \item A long way since 1999 (20 years), there's still a lot to learn
-\item This information has been crucial for biomedical research (e.g. translating
+\item This information has been crucial for bio-medical research (e.g. translating
 GWAS to treatment.)
 }
 
@@ -223,7 +223,7 @@ par(oldpar)
 \item Here we have an example of a (simulated) phylogenetic tree.
 \item We will see this a couple of times during the presentation
 \item This figure summarizes the information that I will be using
-to infere gene functions:
+to infer gene functions:
 \begin{itemize}
 \item The tip nodes (leafs) are modern (known) genes
 \item In general, The color bars next to each gene represent genetic annotations
@@ -310,7 +310,7 @@ estimate of the annotation (yes/no).
 \vspace{1.5cm}
 
 \uncover<5->{We implemented the model using Felsenstein's' pruning algorithm (linear complexity) in the
-R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
+R package \aphylopkg{}.} % \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 
 \vfill\hfill \hyperlink{other-models}{\beamergotobutton{other models}}
 \hyperlink{aphyloalgorithmicview}{\beamergotobutton{other view}}
@@ -321,18 +321,39 @@ R package \aphylopkg{} \hyperlink{aphylopkg}{\beamergotobutton{more}}.}
 \item In the version of the qual document you saw an implementation of the model
 that did not incorporated information regarding the node types, but that is trivially
 added by just adding a separate gain/loss parameter per type
-\item Another venue we have explored is accounting for publicaction bias, most
+\item Another venue we have explored is accounting for publication bias, most
 annotations are of the positive type (has function), but few are (no function).
 \item we have failed in the last tests.
-\item The model has been throughly tested. In particular, we did a large scale
+\item The model has been thoroughly tested. In particular, we did a large scale
 simulation study in which we used all 15,000 trees from panther to simulate
 annotations and then fitted our model using MCMC to check for bias and coverage
 probabilities (which are available in the paper)
-\item The experiment was carriedout using USC's High Performance Computing
+\item The experiment was carried out using USC's High Performance Computing
 cluster with the R package slurmR (described in the document).
 \item Now, I will show you more recent information in which we take 
 data from PantherDB with GO annotations and fit a large pooled model.
 }
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=aphylopkg]
+\frametitle{The \aphylopkg{} R package}
+
+\begin{itemize}[<+->]
+\item Simulation and visualization of annotated phylogenetic trees.
+\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (by-product).
+\item Uses meta-programming: users can specify different formulas, including pooled models \hyperlink{aphylo-pooled}{\beamergotobutton{more}}.
+\item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
+\item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
+(also implemented as part of this project):
+\begin{itemize}
+\item Automatic stop via convergence check.
+\item Out-of-the-box parallel chains using parallel computing.
+\item User-defined transition kernel (in our case, Adaptive Kernel).
+\end{itemize}
+\end{itemize}
+
+%\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
+\end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[t]
@@ -637,7 +658,7 @@ Small networks come in samples
 \begin{frame}[label=ergmito]
 \frametitle{ERGMs for Small Networks}
 
-\uncover<4->{
+\uncover<3->{
 \begin{figure}
 \centering
 \includegraphics[width=.5\linewidth]{parts-of-ergm.pdf}
@@ -653,14 +674,14 @@ computationally feasible.
 
 \item Using the exact likelihood opens a huge window of methodological-possibilities.
 
-\item We implemented this and more in the \ergmitopkg{} R package \hyperlink{ergmitopkg}{\beamergotobutton{more}}
+\item We implemented this and more in the \ergmitopkg{} R package % \hyperlink{ergmitopkg}{\beamergotobutton{more}}
 \end{itemize}
 
 
 \end{frame}
 
 
-%-
+% ------------------------------------------------------------------------------
 
 \begin{frame}
 Sidetrack...\vspace{.5cm}
@@ -678,6 +699,33 @@ Sidetrack...\vspace{.5cm}
 \vfill
 
 \alert{Special thanks to George Barnett who proposed the name during the 2018 NASN!}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=ergmitopkg]
+\frametitle{The \ergmitopkg{}}
+
+In general
+
+\begin{itemize}
+\item Implements estimation of ERGMs using exact statistics for small networks.
+\item Meta-programming allows specifying likelihood (and gradient) functions for
+pooled models.% (\includegraphics[width=.05\linewidth]{plot-graph-4-1.pdf}).
+\item Includes tools for simulating and post-estimation checks.
+\item Getting ready for CRAN!
+\end{itemize}\pause
+
+Other features
+
+\begin{itemize}
+% \item Computes support of Pr using \texttt{ergm::ergm.allstats}
+\item Vectorized calculation of sufficient statistics.
+\item Scales up nicely (hundreds of small networks) saving space and computation (when possible).
+\item Highly tested (90\% coverage with more than one hundred tests).
+\end{itemize}
+
+% \vfill\hfill \hyperlink{ergmito}{\beamerreturnbutton{go back}}
 
 \end{frame}
 
@@ -790,13 +838,13 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \begin{frame}
 \frametitle{Paper 2: Exponential Random Graph Models for Small Networks}
 
-{\bf \large Key takeaways}
+{\bf \large Key takeaways}\pause
 \setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
 \begin{beamercolorbox}[dp=1ex]{conclusions}
 \begin{itemize}
 \item New extension of ERGMs using exact statistics for small networks
-(families, teams, etc.)
-\item Performance: Same (un)bias, Lower Type I error rates, (way) faster.
+(families, teams, etc.)\pause
+\item Performance: Same (un)bias, Lower Type I error rates, (way) faster.\pause
 \item Opens the door the new methods, e.g. Mixed effects, LRT, etc.
 \end{itemize}
 \end{beamercolorbox}
@@ -828,27 +876,28 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}[t]
+\begin{frame}
 \frametitle{Future Research: phylogenetic models}
 
 \begin{itemize}
 \item Make the model hierarchical when pooling trees\pause
 \begin{itemize}
 \item Different mutation rates per class of tree/function
-\item Can be complicated to fit (how many classes?)
+\item Can be complicated to fit/justify (how many classes?)
 \end{itemize}\pause
 \item Use a framework similar to Exponential Random Graph Models:\pause
-\begin{itemize}
-\item A generalization of the model
-\item Extends to account for joint dist of functions+siblings
-\item Can incorporate aditional information such as branch lenghts
-\item Yet computationally more compact compared to SIFTER (iso-statistics)
-\end{itemize}
-\end{itemize}
-\pause
+
 $$
 \Prcond{\Ann=\{\ann{n1}, \ann{n2},\dots\}}{\ann{\parent{n1, \dots}}} = \frac{\exp{\mu^{T} s(\mathbf{x}|\ann{\parent{\cdot}})}}{\sum_{\mathbf{x}'}\exp{\mu^{T} s(\mathbf{x}'|\ann{\parent{\cdot}})}}
 $$
+
+\begin{itemize}
+\item A generalization of the model.
+\item Extends to account for joint dist of functions+siblings.
+\item Can incorporate additional information such as branch lengths.
+\item Yet computationally more compact compared to SIFTER (finite number of parameters).
+\end{itemize}
+\end{itemize}
 
 
 \end{frame}
@@ -960,7 +1009,7 @@ In SIFTER, for modelling 3 functions, we need $2^{2\times 3} = 64$ parameters.
 \pause {\bf ERGMs for large networks} \pause
 \begin{itemize}
 \item There is still no standard way to estimate ERGMs for large networks.\pause
-\item Most atempts are still depending on simulation methods.\pause
+\item Most attempts are still depending on simulation methods.\pause
 \item We could use the Snowball Sampling framework together with ERGMitos.\pause{}
 (... I would call this ERGMote)
 \end{itemize}
@@ -1134,6 +1183,17 @@ There various approaches for this, some to highlight
 
 \end{frame}
 
+% --------------------------
+\begin{frame}[label=aphylo-pooled]
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\linewidth]{comparing-accuracy-1.pdf}
+\caption{Comparing LOOCV AUC when performing predictions using either the estimates from the pooled model or each trees' own set of estimates obtained when fitting the model individually \hyperlink{aphylopkg}{\beamerreturnbutton{go back}}.}
+\end{figure}
+
+\end{frame}
+
 % ------------------------------------------------------------------------------
 \begin{frame}[label = duplicationvsspeciation]
 \frametitle{Speciation}
@@ -1165,26 +1225,7 @@ There various approaches for this, some to highlight
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}[label=aphylopkg]
-\frametitle{The \aphylopkg{} R package}
 
-\begin{itemize}
-\item Simulation and visualization of annotated phylogenetic trees.
-\item Pruning algorithm implemented in C++ using the \texttt{pruner} template library (by-product).
-\item Uses metaprogramming (users can specify different formulas).
-\item The estimation is done using either Maximum Likelihood, Maximum A Posteriory, or MCMC.
-\item The MCMC estimation is done via the \texttt{fmcmc} R package using adaptive MCMC
-(also implemented as part of this project):
-\begin{itemize}
-\item Automatic stop via convergence check.
-\item Out-of-the-box parallel chains using parallel computing.
-\item User-defined transition kernel (in our case, Adaptive Kernel).
-\end{itemize}
-\end{itemize}
-
-\vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
-\end{frame}
 
 
 
@@ -1215,32 +1256,7 @@ This consists on the following steps
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}[label=ergmitopkg]
-\frametitle{The \ergmitopkg{}}
 
-In general
-
-\begin{itemize}
-\item Implements estimation of ERGMs using exact statistics for small networks
-\item Meta-programming allows specifying likelihood (and gradient) functions for
-joint models (a function that writes a function)
-\item Includes tools for simulating, and post-estimation checks
-\item Getting ready for CRAN!
-\end{itemize}
-
-More specific tricks
-
-\begin{itemize}
-\item Computes support of Pr using \texttt{ergm::ergm.allstats}
-\item It includes a vectorized function doing the same
-\item Scales up nice (hundreds of small networks) saving space and computation (when possible)
-\item Highly tested (90\% coverage with more than one hundred tests)
-\end{itemize}
-
-\vfill\hfill \hyperlink{ergmito}{\beamerreturnbutton{go back}}
-
-\end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=ergmitodgp]
