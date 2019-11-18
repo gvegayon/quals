@@ -23,6 +23,7 @@
 
 % Styles
 \usepackage{xcolor}
+\usepackage{colortbl}
 \definecolor{suffstat}{RGB}{10,159,0}
 \definecolor{normconst}{RGB}{87,38,231}
 \setbeamercolor{conclusions}{bg=usclightgray!60!white, fg=uscdarkgray}
@@ -55,6 +56,9 @@ Complex Systems}}
 %\setbeameroption{show notes}
 \usepackage{pgfpages}
 % \setbeameroption{show notes on second screen}
+
+\newcommand{\hlc}[2]{{\only<#1>{\cellcolor{gray!50} #2}}}
+\newcommand{\nhlc}[2]{{\only<#1>{#2}}}
 
 \begin{document}
 % \SweaveOpts{concordance=TRUE}
@@ -483,7 +487,29 @@ govern social networks
 
 \uncover<2->{The normalizing constant has $2^{n(n-1)}$ terms!}
 
-\vfill\hfill \hyperlink{ergmterms}{\beamergotobutton{more on terms}}
+% \vfill\hfill \hyperlink{ergmterms}{\beamergotobutton{more on terms}}
+\end{frame}
+
+% ------------------------------------------------------------------------------
+\begin{frame}[label=ergmterms]
+
+{\bf\color{suffstat} Sufficient statistics} have various forms
+
+\def\fig1width{.45\linewidth}
+\begin{figure}[tb]
+\centering
+\begin{tabular}{m{.2\linewidth}<\centering m{.4\linewidth}<\raggedright}
+\toprule Representation & Description  \\ \midrule
+\includegraphics[width=\fig1width]{ergm-terms/mutual.pdf} & Mutual Ties (Reciprocity)\linebreak[4]$\sum_{i\neq j}y_{ij}y_{ji}$  \\
+\includegraphics[width=\fig1width]{ergm-terms/ttriad.pdf} & Transitive Triad (Balance)\linebreak[4]$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$  \\
+\includegraphics[width=\fig1width]{ergm-terms/homophily.pdf} & Homophily\linebreak[4]$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$ \\
+\includegraphics[width=\fig1width]{ergm-terms/nodeicov.pdf} & Covariate Effect for Incoming Ties\linebreak[4]$\sum_{i\neq j}y_{ij}x_j$ \\
+\includegraphics[width=\fig1width]{ergm-terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
+\bottomrule
+\end{tabular}
+\end{figure}
+
+% \vfill\hfill \hyperlink{ergmeq}{\beamerreturnbutton{go back}}
 \end{frame}
 
 % -----------------------------------------------------------------------------
@@ -586,8 +612,7 @@ We see small networks everywhere\pause
 \uncover<7->{
 \begin{minipage}{.55\linewidth}
 \centering\large
-When studying these, network surveys include
-multiple small networks
+Small networks come in samples
 \includegraphics[width=.85\linewidth]{plot-graph-4-1.pdf}
 % \includegraphics[width=.95\linewidth]{american-chopper-argument-ergmitos.png}
 \end{minipage}
@@ -700,6 +725,29 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \end{frame}
 
 % ------------------------------------------------------------------------------
+\begin{frame}[label=ergmsims,allowframebreaks]
+\frametitle{Paper 2 Simulation Studies: Error rate}
+
+\begin{minipage}{.45\linewidth}
+\begin{itemize}[<+->]
+\item The MC-MLE implementation failed $\sim$ 5,000/20,000 times
+\item In $\sim$700 of those cases ergmito (MLE) reported a significant effect
+\item I no case that MLE failed MC-MLE reported an effect.
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\linewidth}
+\begin{figure}
+\centering
+\includegraphics[width=.9\linewidth]{failed-tree.pdf}
+\end{figure}
+\end{minipage}
+
+% \hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
+
+\end{frame}
+
+% ------------------------------------------------------------------------------
 \begin{frame}
 \frametitle{Paper 2 Simulation Studies: Empirical Type I error}
 
@@ -734,7 +782,7 @@ comparing MC-MLE (ergm) with MLE (ergmito).
 \includegraphics[width=.6\linewidth]{bias-elapsed-02-various-sizes-4-5-ttriad.pdf}
 \end{figure}
 
-\vfill\hfill\hyperlink{ergmsims}{\beamergotobutton{more results}}
+\vfill\hfill\hyperlink{ergmito-bias}{\beamergotobutton{more results}}
 
 \end{frame}
 
@@ -842,22 +890,56 @@ $$
 \begin{frame}[t]
 \frametitle{Future Research: phylogenetic models}
 
-Imagine that we have 3 functions and that each node has 2 siblings
+Imagine that we have 3 functions (rows) and that each node has 2 siblings (columns)
 
-\begin{table}
-\begin{tabular}{llcc}
-\toprule
-& & \multicolumn{2}{c}{\bf Transitions to} \\
- & & Case 1 & Case 2 \\ \cmidrule(r){3-4}
-\multicolumn{2}{r}{\textbf{Parent} $\left[\begin{array}{c}0 \\ 1 \\ 0\end{array}\right]$} & 
-$\left[\begin{array}{cc}0 & 0 \\ 1 & 0 \\ 0 & 1\end{array}\right]$ & 
-$\left[\begin{array}{cc}1 & 0 \\ 0 & 0 \\ 1 & 0\end{array}\right]$ \pause \\ \midrule 
-\multicolumn{3}{l}{\textbf{Sufficient statistics}} \pause \\ 
-& \# Gains & 1 & 2 \pause \\
-& \# only one offspring changes & 1 & 0 \pause \\
-& \# Swaps (0$\to$1, 1$\to$0) & 2 & 4 \\ \bottomrule
-\end{tabular}
-\end{table}
+\mode<beamer>{
+  \begin{table}
+  \begin{tabular}{llcc}
+  \toprule
+  & & \multicolumn{2}{c}{\bf Transitions to} \\
+   & & Case 1 & Case 2 \\ \cmidrule(r){3-4}
+  \multicolumn{2}{r}{\textbf{Parent} $\begin{array}{c}\mbox{A} \\ \mbox{B} \\ \mbox{C}\end{array}\left[\begin{array}{c}0 \\ 1 \\ 0\end{array}\right]$} & 
+  $\left[\begin{array}{cc} %
+    0 & \nhlc{1-3}{0}\hlc{4}{0}\nhlc{5-}{0} \\ %
+    1 & \nhlc{1-3}{0}\hlc{4-5}{0}\nhlc{6-}{0} \\ %
+    0 & \nhlc{1-2}{1}\hlc{3-5}{1}\nhlc{6-}{1} %
+    \end{array}\right]$ & 
+  $\left[\begin{array}{cc} %
+    \nhlc{-2}{1}\hlc{3}{1}\nhlc{4}{1}\hlc{5}{1}\nhlc{6-}{1} & 0 \\ %
+    \nhlc{1-4}{0}\hlc{5}{0}\nhlc{6-}{0} & \nhlc{1-4}{0}\hlc{5}{0}\nhlc{6-}{0} \\ %
+    \nhlc{-2}{1}\hlc{3}{1}\nhlc{4}{1}\hlc{5}{1}\nhlc{6-}{1} & 0 %
+    \end{array}\right]$ \pause \\ \midrule 
+  \multicolumn{3}{l}{\textbf{Sufficient statistics}} \pause \\ 
+  & \# Gains & 1 & 2 \pause \\
+  & \# only one offspring changes & 1 & 0 \pause \\
+  & \# Swaps (0$\to$1, 1$\to$0) & 2 & 4 \\ \bottomrule
+  \end{tabular}
+  \end{table}
+}
+\mode<handout>{
+  \begin{table}
+  \begin{tabular}{llcc}
+  \toprule
+  & & \multicolumn{2}{c}{\bf Transitions to} \\
+   & & Case 1 & Case 2 \\ \cmidrule(r){3-4}
+  \multicolumn{2}{r}{\textbf{Parent} $\begin{array}{c}\mbox{A} \\ \mbox{B} \\ \mbox{C}\end{array}\left[\begin{array}{c}0 \\ 1 \\ 0\end{array}\right]$} & 
+  $\left[\begin{array}{cc} %
+    0 & 0 \\ %
+    1 & 0 \\ %
+    0 & 1 %
+    \end{array}\right]$ & 
+  $\left[\begin{array}{cc} %
+    1 & 0 \\ %
+    0 & 0 \\ %
+    1 & 0 %
+    \end{array}\right]$ \pause \\ \midrule 
+  \multicolumn{3}{l}{\textbf{Sufficient statistics}} \pause \\ 
+  & \# Gains & 1 & 2 \pause \\
+  & \# only one offspring changes & 1 & 0 \pause \\
+  & \# Swaps (0$\to$1, 1$\to$0) & 2 & 4 \\ \bottomrule
+  \end{tabular}
+  \end{table}
+}
 
 \pause
 In SIFTER, for modelling 3 functions, we need $2^{2\times 3} = 64$ parameters.
@@ -901,7 +983,7 @@ In SIFTER, for modelling 3 functions, we need $2^{2\times 3} = 64$ parameters.
 \item Paper 2: ERGMs for small networks
   \begin{itemize}
   \item An extension to a well studied models for social networks.
-  \item Implements 
+  \item Small size allows exact calculations.
   \item Opens the door to a large set of methodological innovations.
   \item \textbf{Next steps:} GOF or extensions to large networks?
   \end{itemize}
@@ -909,12 +991,11 @@ In SIFTER, for modelling 3 functions, we need $2^{2\times 3} = 64$ parameters.
 
 \vfill
 \footnotesize 
-\uncover<11->{{\bf Accomplishments during the development of this work}}
-\uncover<11->{
+\uncover<11->{{\bf Accomplishments during the development of this work}
 \begin{beamercolorbox}{conclusions}
 \begin{itemize}
-\item<12->6 journal publications (Journal of Open Source Software, Stata Journal, Journal of health and social behavior, Translational behavioral medicine, Social Science \& Medicine)
-\item<13->11 packages/libraries built (ergmito, similR, gnet, fmcmc, slurmR, aphylo, polygons, pruner, netplot, rphyloxml, jsPhyloSVG)
+\item 6 journal publications (Journal of Open Source Software, Stata Journal, Journal of health and social behavior, Translational behavioral medicine, Social Science \& Medicine)
+\item 11 packages/libraries built (ergmito, similR, gnet, fmcmc, slurmR, aphylo, polygons, pruner, netplot, rphyloxml, jsPhyloSVG)
 \end{itemize}
 \end{beamercolorbox}
 }
@@ -1105,27 +1186,7 @@ There various approaches for this, some to highlight
 \vfill\hfill \hyperlink{aphylographicalview}{\beamerreturnbutton{go back}}
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}[label=ergmterms]
 
-{\bf\color{suffstat} Sufficient statistics} have various forms
-
-\def\fig1width{.45\linewidth}
-\begin{figure}[tb]
-\centering
-\begin{tabular}{m{.2\linewidth}<\centering m{.4\linewidth}<\raggedright}
-\toprule Representation & Description  \\ \midrule
-\includegraphics[width=\fig1width]{ergm-terms/mutual.pdf} & Mutual Ties (Reciprocity)\linebreak[4]$\sum_{i\neq j}y_{ij}y_{ji}$  \\
-\includegraphics[width=\fig1width]{ergm-terms/ttriad.pdf} & Transitive Triad (Balance)\linebreak[4]$\sum_{i\neq j\neq k}y_{ij}y_{jk}y_{ik}$  \\
-\includegraphics[width=\fig1width]{ergm-terms/homophily.pdf} & Homophily\linebreak[4]$\sum_{i\neq j}y_{ij}\mathbf{1}\left(x_i=x_j\right)$ \\
-\includegraphics[width=\fig1width]{ergm-terms/nodeicov.pdf} & Covariate Effect for Incoming Ties\linebreak[4]$\sum_{i\neq j}y_{ij}x_j$ \\
-\includegraphics[width=\fig1width]{ergm-terms/fourcycle.pdf} & Four Cycle\linebreak[4]$\sum_{i\neq j \neq k \neq l}y_{ij}y_{jk}y_{kl}y_{li}$  \\
-\bottomrule
-\end{tabular}
-\end{figure}
-
-\vfill\hfill \hyperlink{ergmeq}{\beamerreturnbutton{go back}}
-\end{frame}
 
 % ------------------------------------------------------------------------------
 \begin{frame}[label=mcmle]
@@ -1187,7 +1248,7 @@ More specific tricks
 
 We performed a simulation study with the following features:
 
-\begin{itemize}[<+->]
+\begin{itemize}%[<+->]
 \item Draw 20,000 samples of groups of small networks
 \item Each group had prescribed: (model parameters, number of networks, sizes of the networks)
 \item Each group could have from 5 to 300 small networks
@@ -1198,21 +1259,10 @@ We performed a simulation study with the following features:
 
 \end{frame}
 
-% ------------------------------------------------------------------------------
-\begin{frame}[label=ergmsims,allowframebreaks]
-\frametitle{Paper 2 Simulation Studies: Error rate}
 
-\begin{figure}
-\centering
-\includegraphics[width=.4\linewidth]{failed-tree.pdf}
-\end{figure}
-
-\hyperlink{ergmitoexperiment}{\beamerreturnbutton{go back}}
-
-\end{frame}
 
 % ------------------------------------------------------------------------------
-\begin{frame}
+\begin{frame}[label=ergmito-bias]
 \frametitle{Paper 2 Simulation Studies: Empirical Bias}
 
 \begin{figure}
